@@ -2,11 +2,15 @@ package ar.edu.unlp.info.bd2.services;
 import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.repositories.MLRepository;
 import ar.edu.unlp.info.bd2.repositories.MLException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 public class MLServiceImpl implements MLService {
@@ -18,9 +22,12 @@ public class MLServiceImpl implements MLService {
 		this.repository = repository;
 	}
 	
-	public User createUser(String email, String fullname, String password, Date dayOfBirth) throws MLException {
-		User user = new User(email, password, fullname, dayOfBirth);
-		return repository.persistUser(user);
+	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
+	public User createUser(String email, String fullname, String password, Date dayOfBirth){
+		User user = new User(email, fullname, password, dayOfBirth);
+		//return repository.persistUser(user);
+		repository.save(user);
+        return user;
 	}
 
 	@Override
@@ -77,10 +84,12 @@ public class MLServiceImpl implements MLService {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
 	public Optional<User> getUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(this.repository.findUserByEmail(email));
 	}
+	
+	
 
 	@Override
 	public Optional<Provider> getProviderByCuit(long cuit) {

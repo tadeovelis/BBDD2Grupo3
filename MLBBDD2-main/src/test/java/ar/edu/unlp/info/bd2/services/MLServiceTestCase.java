@@ -53,6 +53,7 @@ public class MLServiceTestCase {
         assertEquals("pas$w0rd", user.getPassword());
         MLException ex = assertThrows(MLException.class, () -> this.service.createUser("federico.orlando@info.unlp.edu.ar", "Federico Orlando", "pas$w0rd", dob));
         assertEquals("Constraint Violation",ex.getMessage());
+
     }
     
 

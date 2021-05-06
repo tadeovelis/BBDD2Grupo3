@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Optional;
 
 
-public interface MLService {
+public interface MLService{
     
 	/**
 	 * Crea y devuelve una nueva Catogoria
@@ -116,6 +116,7 @@ public interface MLService {
 	 * @return
 	 */
 	Optional<User> getUserByEmail(String email);
+	
 
 	/**
 	 * 

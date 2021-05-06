@@ -19,11 +19,11 @@ public class User {
 
     public User() {};
 
-    public User(String email, String password, String fullname, Date dateOfBirth) {
+    public User(String email, String fullname, String password, Date dayOfBirth) {
         setFullName(fullname);
         setEmail(email);
         setPassword(password);
-        setDateOfBirth(dateOfBirth);
+        setDateOfBirth(dayOfBirth);
     };
 
     public String getFullname() {

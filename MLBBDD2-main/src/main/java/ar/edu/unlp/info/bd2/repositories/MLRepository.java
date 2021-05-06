@@ -14,6 +14,10 @@ public class MLRepository{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	public void save(Object o) {
+        this.sessionFactory.getCurrentSession().saveOrUpdate(o);
+    }
 
 	public Session getSession(){
 		return this.sessionFactory.getCurrentSession();
@@ -27,6 +31,14 @@ public class MLRepository{
 	public User persistUser(User user){
 		Long id = (Long)this.sessionFactory.getCurrentSession().save(user);
 		return this.findUserById(id);
+	}
+	
+	public User findUserByEmail(String email) {
+		String hql = "from User where email = :email ";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("email", email);
+		List<User> users = query.getResultList();
+		return !users.isEmpty() ? users.get(query.getFirstResult()) : null;
 	}
 	
 	public User findUserById(Long id) {
