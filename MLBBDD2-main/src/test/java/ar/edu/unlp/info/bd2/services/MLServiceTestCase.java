@@ -28,9 +28,7 @@ import java.util.Optional;
 public class MLServiceTestCase {
 
     @Autowired
-    MLService service;
-    
-
+    private MLService service;
     
     @Test
     public void testCreateUser() throws MLException{
