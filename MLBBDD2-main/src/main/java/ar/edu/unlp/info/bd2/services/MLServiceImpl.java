@@ -69,8 +69,9 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public OnDeliveryPayment createOnDeliveryPayment(String name, Float promisedAmount) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		OnDeliveryPayment onDeliveryPayment = new OnDeliveryPayment(name, promisedAmount);
+		repository.save(onDeliveryPayment);
+		return onDeliveryPayment;
 	}
 
 	@Override
@@ -127,8 +128,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Optional<OnDeliveryPayment> getOnDeliveryPaymentByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(this.repository.findOnDeliveryPaymentByName(name));
 	}
 
 	@Override

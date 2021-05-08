@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ar.edu.unlp.info.bd2.model.Category;
 import ar.edu.unlp.info.bd2.model.CreditCardPayment;
 import ar.edu.unlp.info.bd2.model.DeliveryMethod;
+import ar.edu.unlp.info.bd2.model.OnDeliveryPayment;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
@@ -95,5 +96,13 @@ public class MLRepository{
 		query.setParameter("name", name);
 		List<CreditCardPayment> creditCardPayments = query.getResultList();
 		return !creditCardPayments.isEmpty() ? creditCardPayments.get(query.getFirstResult()) : null;
+	}
+	
+	public OnDeliveryPayment findOnDeliveryPaymentByName(String name) {
+		String hql = "from OnDeliveryPayment where name = :name";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("name", name);
+		List<OnDeliveryPayment> onDeliveryPayments = query.getResultList();
+		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments.get(query.getFirstResult()) : null;
 	}
 }
