@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.unlp.info.bd2.model.Category;
+import ar.edu.unlp.info.bd2.model.DeliveryMethod;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
@@ -77,5 +78,13 @@ public class MLRepository{
 		query.setParameter("name", name);
 		List<Product> products = query.getResultList();
 		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
+	}
+	
+	public DeliveryMethod findDeliveryMethodByName(String name) {
+		String hql = "from DeliveryMethod where name = :name";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("name", name);
+		List<DeliveryMethod> deliveryMethods = query.getResultList();
+		return !deliveryMethods.isEmpty() ? deliveryMethods.get(query.getFirstResult()) : null;
 	}
 }

@@ -102,4 +102,19 @@ public class MLServiceTestCase {
         //assertEquals("Constraint Violation",ex.getMessage());
     }
 
+    @Test
+    public void testCreateDeliveryMethod() throws MLException {
+        DeliveryMethod dm = this.service.createDeliveryMethod("Moto menos 1kg", 250.0F, 0.01F, 0.9999F);
+        assertNotNull(dm.getId());
+        assertEquals(Float.valueOf(250.0F),dm.getCost());
+        assertEquals(Float.valueOf(0.9999F),dm.getEndWeight());
+        Optional<DeliveryMethod> del = this.service.getDeliveryMethodByName("Moto menos 1kg");
+        if (!del.isPresent()) {
+            throw new MLException("Delivery Method doesn't exists");
+        }
+        DeliveryMethod d = del.get();
+        assertNotNull(d.getId());
+        assertEquals(Float.valueOf(250.0F),d.getCost());
+        assertEquals(Float.valueOf(0.01F),d.getStartWeight());
+    }
 }

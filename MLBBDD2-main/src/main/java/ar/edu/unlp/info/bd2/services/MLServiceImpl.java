@@ -51,11 +51,12 @@ public class MLServiceImpl implements MLService {
 		return provider;
 	}
 
-	@Override
+	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
 	public DeliveryMethod createDeliveryMethod(String name, Float cost, Float startWeight, Float endWeight)
 			throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		DeliveryMethod deliveryMethod = new DeliveryMethod(name, cost, startWeight, endWeight);
+		repository.save(deliveryMethod);
+		return deliveryMethod;
 	}
 
 	@Override
@@ -115,8 +116,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Optional<DeliveryMethod> getDeliveryMethodByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(this.repository.findDeliveryMethodByName(name));
 	}
 
 	@Override
