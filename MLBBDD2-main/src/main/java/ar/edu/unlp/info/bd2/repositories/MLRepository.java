@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.unlp.info.bd2.model.Category;
+import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
 
 public class MLRepository{
@@ -59,5 +60,13 @@ public class MLRepository{
 		query.setParameter("name", name);
 		List<Category> categories = query.getResultList();
 		return !categories.isEmpty() ? categories.get(query.getFirstResult()) : null;
+	}
+	
+	public Provider findProviderByCuit(long cuit) {
+		String hql = "from Provider where cuit = :cuit";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("cuit", cuit);
+		List<Provider> providers = query.getResultList();
+		return !providers.isEmpty() ? providers.get(query.getFirstResult()) : null;
 	}
 }

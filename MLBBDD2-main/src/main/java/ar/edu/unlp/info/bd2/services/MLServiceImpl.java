@@ -43,10 +43,11 @@ public class MLServiceImpl implements MLService {
 		return null;
 	}
 
-	@Override
+	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
 	public Provider createProvider(String name, Long cuit) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		Provider provider = new Provider(name, cuit);
+		repository.save(provider);
+		return provider;
 	}
 
 	@Override
@@ -89,13 +90,10 @@ public class MLServiceImpl implements MLService {
 	public Optional<User> getUserByEmail(String email) {
 		return Optional.ofNullable(this.repository.findUserByEmail(email));
 	}
-	
-	
 
 	@Override
 	public Optional<Provider> getProviderByCuit(long cuit) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(this.repository.findProviderByCuit(cuit));
 	}
 
 	@Override

@@ -66,5 +66,21 @@ public class MLServiceTestCase {
         assertNotNull(cat.getId());
         assertEquals("Hogar",cat.getName());
     }
+    
+    @Test
+    public void testCreateProvider() throws MLException {
+        Provider p = this.service.createProvider("Philips",30715589634L);
+        assertNotNull (p.getId());
+        assertEquals("Philips", p.getName());
+        Optional<Provider> prov = this.service.getProviderByCuit(30715589634L);
+        if (!prov.isPresent()) {
+            throw new MLException("Provider doesn't exists");
+        }
+        Provider provider = prov.get();
+        assertNotNull (provider.getId());
+        assertEquals("Philips", provider.getName());
+        //MLException ex = assertThrows(MLException.class, () -> this.service.createProvider("Philips",30715589634L));
+        //assertEquals("Constraint Violation",ex.getMessage());
+    }
 
 }
