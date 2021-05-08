@@ -82,5 +82,24 @@ public class MLServiceTestCase {
         //MLException ex = assertThrows(MLException.class, () -> this.service.createProvider("Philips",30715589634L));
         //assertEquals("Constraint Violation",ex.getMessage());
     }
+    
+    @Test
+    public void testCreateProduct() throws MLException {
+        Category cat = this.service.createCategory("Hogar");
+        assertNotNull(cat.getId());
+        Product prod = this.service.createProduct("Lamparita led 7w fria", Float.valueOf(40.5F), cat);
+        assertNotNull(prod.getId());
+        assertEquals(40.5F, (float) prod.getWeight());
+        Optional<Product> p = this.service.getProductByName("Lamparita led 7w fria");
+        if (!p.isPresent()) {
+            throw new MLException("Product doesn't exists");
+        }
+        Product product = p.get();
+        assertNotNull(product.getId());
+        assertEquals(Float.valueOf(40.5F), product.getWeight());
+        assertEquals("Hogar",product.getCategory().getName());
+        //MLException ex = assertThrows(MLException.class, () -> this.service.createProduct("Lamparita led 7w fria", Float.valueOf(40.5F), cat));
+        //assertEquals("Constraint Violation",ex.getMessage());
+    }
 
 }

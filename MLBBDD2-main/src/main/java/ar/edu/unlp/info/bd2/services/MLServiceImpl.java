@@ -37,10 +37,11 @@ public class MLServiceImpl implements MLService {
 		return category;
 	}
 
-	@Override
+	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
 	public Product createProduct(String name, Float weight, Category category) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = new Product(name, weight, category);
+		repository.save(product);
+		return product;
 	}
 
 	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
@@ -103,8 +104,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Optional<Product> getProductByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(this.repository.findProductByName(name));
 	}
 
 	@Override
