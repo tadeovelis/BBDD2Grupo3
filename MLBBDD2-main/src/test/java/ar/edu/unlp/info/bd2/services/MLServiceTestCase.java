@@ -24,7 +24,7 @@ import java.util.Optional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class}, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 public class MLServiceTestCase {
 
     @Autowired
@@ -51,8 +51,20 @@ public class MLServiceTestCase {
         assertEquals("pas$w0rd", user.getPassword());
         //MLException ex = assertThrows(MLException.class, () -> this.service.createUser("federico.orlando@info.unlp.edu.ar", "Federico Orlando", "pas$w0rd", dob));
         //assertEquals("Constraint Violation",ex.getMessage());
-
     }
     
+    @Test
+    public void testCreateCategory() throws MLException {
+        Category c = this.service.createCategory("Hogar");
+        assertNotNull(c.getId());
+        assertEquals("Hogar",c.getName());
+        Optional<Category> oc = this.service.getCategoryByName("Hogar");
+        if (! oc.isPresent()) {
+            throw new MLException("Category not found");
+        }
+        Category cat = oc.get();
+        assertNotNull(cat.getId());
+        assertEquals("Hogar",cat.getName());
+    }
 
 }

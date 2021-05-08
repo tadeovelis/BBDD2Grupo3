@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.edu.unlp.info.bd2.model.Category;
 import ar.edu.unlp.info.bd2.model.User;
 
 public class MLRepository{
@@ -23,15 +24,18 @@ public class MLRepository{
 		return this.sessionFactory.getCurrentSession();
 	}
 	
+	/*
 	public User createUser(User user){
 		Long id = (Long)this.sessionFactory.getCurrentSession().save(user);
 		return this.findUserById(id);
 	}
 	
+	
 	public User persistUser(User user){
 		Long id = (Long)this.sessionFactory.getCurrentSession().save(user);
 		return this.findUserById(id);
 	}
+	*/
 	
 	public User findUserByEmail(String email) {
 		String hql = "from User where email = :email ";
@@ -47,5 +51,13 @@ public class MLRepository{
 		query.setParameter("id", id);
 		List<User> users = query.getResultList();
 		return !users.isEmpty() ? users.get(query.getFirstResult()) : null;
+	}
+	
+	public Category findCategoryByName(String name) {
+		String hql = "from Category where name = :name";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("name", name);
+		List<Category> categories = query.getResultList();
+		return !categories.isEmpty() ? categories.get(query.getFirstResult()) : null;
 	}
 }

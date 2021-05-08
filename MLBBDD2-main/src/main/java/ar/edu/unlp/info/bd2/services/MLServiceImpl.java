@@ -26,15 +26,15 @@ public class MLServiceImpl implements MLService {
 	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
 	public User createUser(String email, String fullname, String password, Date dayOfBirth){
 		User user = new User(email, fullname, password, dayOfBirth);
-		//return repository.persistUser(user);
 		repository.save(user);
         return user;
 	}
 
-	@Override
+	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
 	public Category createCategory(String name) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		Category category = new Category(name);
+		repository.save(category);
+		return category;
 	}
 
 	@Override
@@ -100,8 +100,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Optional<Category> getCategoryByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(this.repository.findCategoryByName(name));
 	}
 
 	@Override
