@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.unlp.info.bd2.model.Category;
+import ar.edu.unlp.info.bd2.model.CreditCardPayment;
 import ar.edu.unlp.info.bd2.model.DeliveryMethod;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.Provider;
@@ -86,5 +87,13 @@ public class MLRepository{
 		query.setParameter("name", name);
 		List<DeliveryMethod> deliveryMethods = query.getResultList();
 		return !deliveryMethods.isEmpty() ? deliveryMethods.get(query.getFirstResult()) : null;
+	}
+	
+	public CreditCardPayment findCreditCardPaymentByName(String name) {
+		String hql = "from CreditCardPayment where name = :name";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("name", name);
+		List<CreditCardPayment> creditCardPayments = query.getResultList();
+		return !creditCardPayments.isEmpty() ? creditCardPayments.get(query.getFirstResult()) : null;
 	}
 }

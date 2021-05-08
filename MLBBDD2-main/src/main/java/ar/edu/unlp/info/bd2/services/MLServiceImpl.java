@@ -62,8 +62,9 @@ public class MLServiceImpl implements MLService {
 	@Override
 	public CreditCardPayment createCreditCardPayment(String name, String brand, Long number, Date expiry, Integer cvv,
 			String owner) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		CreditCardPayment creditCardPayment = new CreditCardPayment(name, brand, number, expiry, cvv, owner);
+		repository.save(creditCardPayment);
+		return creditCardPayment;
 	}
 
 	@Override
@@ -121,8 +122,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Optional<CreditCardPayment> getCreditCardPaymentByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(this.repository.findCreditCardPaymentByName(name));
 	}
 
 	@Override
