@@ -7,6 +7,7 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.unlp.info.bd2.model.Category;
 import ar.edu.unlp.info.bd2.model.CreditCardPayment;
@@ -16,6 +17,8 @@ import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
 
+
+@Repository
 public class MLRepository{
 	
 	@Autowired
