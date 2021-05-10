@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ public class Provider {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	@Column(unique=true)
 	private String name;
 	private Long cuit;
 	

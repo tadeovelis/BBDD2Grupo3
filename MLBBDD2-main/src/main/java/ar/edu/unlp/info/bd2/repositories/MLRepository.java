@@ -25,25 +25,19 @@ public class MLRepository{
 	private SessionFactory sessionFactory;
 	
 	public void save(Object o) {
-        this.sessionFactory.getCurrentSession().saveOrUpdate(o);
+        try {
+        	this.sessionFactory.getCurrentSession().saveOrUpdate(o);	
+        }
+        catch (Exception e) {
+        	this.sessionFactory.getCurrentSession().clear();
+        	throw e;
+        }
     }
 
 	public Session getSession(){
 		return this.sessionFactory.getCurrentSession();
 	}
 	
-	/*
-	public User createUser(User user){
-		Long id = (Long)this.sessionFactory.getCurrentSession().save(user);
-		return this.findUserById(id);
-	}
-	
-	
-	public User persistUser(User user){
-		Long id = (Long)this.sessionFactory.getCurrentSession().save(user);
-		return this.findUserById(id);
-	}
-	*/
 	
 	public User findUserByEmail(String email) {
 		String hql = "from User where email = :email ";

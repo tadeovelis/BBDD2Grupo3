@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.Optional;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,10 +25,17 @@ public class MLServiceImpl implements MLService {
 		this.repository = repository;
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
-	public User createUser(String email, String fullname, String password, Date dayOfBirth){
+	
+	@Override
+	@Transactional
+	public User createUser(String email, String fullname, String password, Date dayOfBirth) throws MLException {
 		User user = new User(email, fullname, password, dayOfBirth);
-		repository.save(user);
+		try {
+			repository.save(user);
+		}
+		catch(ConstraintViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
         return user;
 	}
 
@@ -45,10 +53,16 @@ public class MLServiceImpl implements MLService {
 		return product;
 	}
 
-	@Transactional(propagation=Propagation.REQUIRED, noRollbackFor=MLException.class)
+	@Override
+	@Transactional
 	public Provider createProvider(String name, Long cuit) throws MLException {
 		Provider provider = new Provider(name, cuit);
-		repository.save(provider);
+		try {
+			repository.save(provider);
+		}
+		catch(ConstraintViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
 		return provider;
 	}
 

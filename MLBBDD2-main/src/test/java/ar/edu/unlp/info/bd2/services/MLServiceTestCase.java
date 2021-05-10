@@ -49,8 +49,8 @@ public class MLServiceTestCase {
         assertEquals("Federico Orlando",user.getFullname());
         assertEquals(dob, user.getDayOfBirth());
         assertEquals("pas$w0rd", user.getPassword());
-        //MLException ex = assertThrows(MLException.class, () -> this.service.createUser("federico.orlando@info.unlp.edu.ar", "Federico Orlando", "pas$w0rd", dob));
-        //assertEquals("Constraint Violation",ex.getMessage());
+        MLException ex = assertThrows(MLException.class, () -> this.service.createUser("federico.orlando@info.unlp.edu.ar", "Federico Orlando", "pas$w0rd", dob));
+        assertEquals("Constraint Violation",ex.getMessage());
     }
     
     @Test
@@ -79,8 +79,8 @@ public class MLServiceTestCase {
         Provider provider = prov.get();
         assertNotNull (provider.getId());
         assertEquals("Philips", provider.getName());
-        //MLException ex = assertThrows(MLException.class, () -> this.service.createProvider("Philips",30715589634L));
-        //assertEquals("Constraint Violation",ex.getMessage());
+        MLException ex = assertThrows(MLException.class, () -> this.service.createProvider("Philips",30715589634L));
+        assertEquals("Constraint Violation",ex.getMessage());
     }
     
     @Test
