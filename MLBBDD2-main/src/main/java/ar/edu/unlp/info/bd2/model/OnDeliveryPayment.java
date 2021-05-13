@@ -8,10 +8,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="OnDeliveryPayment")
-public class OnDeliveryPayment {
+public class OnDeliveryPayment extends PaymentMethod {
+	/*
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    */
 	private String name;
 	private Float promisedAmount;
 	
@@ -36,9 +38,5 @@ public class OnDeliveryPayment {
 
 	public void setPromisedAmount(Float promisedAmount) {
 		this.promisedAmount = promisedAmount;
-	}
-
-	public Long getId() {
-		return id;
 	}
 }

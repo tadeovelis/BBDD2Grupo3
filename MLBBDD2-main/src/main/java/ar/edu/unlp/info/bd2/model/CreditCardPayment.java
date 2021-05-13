@@ -10,10 +10,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="CreditCardPayment")
-public class CreditCardPayment {
+public class CreditCardPayment extends PaymentMethod {
+	/*
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    */
 	private String name;
 	private String brand;
 	private Long number;
@@ -62,10 +64,6 @@ public class CreditCardPayment {
 
 	public void setExpiry(Date expiry) {
 		this.expiry = expiry;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public Integer getCvv() {

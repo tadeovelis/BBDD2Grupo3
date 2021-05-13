@@ -1,5 +1,8 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,9 +17,10 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	@Column(unique=true)
 	private String name;
 	private Float weight;
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	private Category category;
 	
 	public Product() {};
@@ -49,6 +53,5 @@ public class Product {
 	public Long getId() {
 		return id;
 	}
-	
 	
 }

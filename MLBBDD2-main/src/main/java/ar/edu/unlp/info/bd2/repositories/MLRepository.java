@@ -14,11 +14,11 @@ import ar.edu.unlp.info.bd2.model.CreditCardPayment;
 import ar.edu.unlp.info.bd2.model.DeliveryMethod;
 import ar.edu.unlp.info.bd2.model.OnDeliveryPayment;
 import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.ProductOnSale;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
 
 
-@Repository
 public class MLRepository{
 	
 	@Autowired
@@ -101,5 +101,19 @@ public class MLRepository{
 		query.setParameter("name", name);
 		List<OnDeliveryPayment> onDeliveryPayments = query.getResultList();
 		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments.get(query.getFirstResult()) : null;
+	}
+
+	/*
+	 * Te devuelve una lista con todos los ProductsOnSale que matcheen
+	 * con product y provider
+	 * Si no hay ninguno devuelve null
+	 */
+	public List<ProductOnSale> findProductsOnSaleByProductAndProvider(Product product, Provider provider) {
+		String hql = "from ProductOnSale where product_id = :product_id and provider_id = :provider_id";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("product_id", product.getId());
+		query.setParameter("provider_id", provider.getId());
+		List<ProductOnSale> productsOnSale = query.getResultList();
+		return !productsOnSale.isEmpty() ? productsOnSale : null;
 	}
 }
