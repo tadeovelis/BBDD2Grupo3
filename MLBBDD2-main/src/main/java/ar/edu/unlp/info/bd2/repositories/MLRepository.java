@@ -119,6 +119,6 @@ public class MLRepository{
 	}
 	
 	public List<Purchase> getAllPurchasesMadeByUser(String username) {
-		return this.sessionFactory.getCurrentSession().createQuery("SELECT u.fullname FROM User u INNER JOIN Purchase p ON (u.id = p.client) WHERE u.fullname = '"+ username +"'").list();
+		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM User u INNER JOIN Purchase p ON (u.id = p.client) WHERE u.email = '"+ username +"'").list();
 	}
 }
