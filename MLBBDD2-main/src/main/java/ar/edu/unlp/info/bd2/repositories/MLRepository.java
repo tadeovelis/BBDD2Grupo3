@@ -118,7 +118,7 @@ public class MLRepository{
 		return !productsOnSale.isEmpty() ? productsOnSale : null;
 	}
 	
-	public List<Purchase> getAllOrdersMadeByUser(String username){
-		return this.sessionFactory.getCurrentSession().createQuery("select o from Order AS o inner join User AS u ON (o.client=u.id) where username = '" + username + "'").list();
+	public List<Purchase> getAllPurchasesMadeByUser(String username) {
+		return null;
 	}
 }

@@ -3,6 +3,7 @@ import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.repositories.MLException;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -173,6 +174,8 @@ public interface MLService{
 	 * @return
 	 */
 	Optional<Purchase> getPurchaseById(Long id);
+	
+	List<Purchase> getAllPurchasesMadeByUser(String username);
 	
 
 }
