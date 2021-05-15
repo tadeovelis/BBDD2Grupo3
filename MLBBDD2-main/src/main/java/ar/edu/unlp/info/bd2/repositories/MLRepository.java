@@ -17,6 +17,7 @@ import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.ProductOnSale;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.model.Purchase;
 
 
 public class MLRepository{
@@ -115,5 +116,9 @@ public class MLRepository{
 		query.setParameter("provider_id", provider.getId());
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return !productsOnSale.isEmpty() ? productsOnSale : null;
+	}
+	
+	public List<Purchase> getAllOrdersMadeByUser(String username){
+		return this.sessionFactory.getCurrentSession().createQuery("select o from Order AS o inner join User AS u ON (o.client=u.id) where username = '" + username + "'").list();
 	}
 }
