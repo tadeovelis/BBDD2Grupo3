@@ -215,4 +215,8 @@ public class MLServiceImpl implements MLService {
 		return null;
 	}
 	
+	public List<Order> getAllPurchasesMadeByUser(String user){
+		return this.repository.getAllPurchasesMadeByUser(user);
+	}
+	
 }
