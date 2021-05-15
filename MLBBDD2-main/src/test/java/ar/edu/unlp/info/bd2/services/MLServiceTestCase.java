@@ -218,8 +218,7 @@ public class MLServiceTestCase {
         Date id3 = cal.getTime();
         MLException ex = assertThrows(MLException.class, () -> this.service.createProductOnSale(prod, p, 200F, id3));
         assertEquals("Ya existe un precio para el producto con fecha de inicio de vigencia posterior a la fecha de inicio dada" ,ex.getMessage());
-    }
-    /*
+    }    
     @Test
     public void testCreatePurchase() throws MLException {
         Provider p = this.service.createProvider("Philips",30715589634L);
@@ -256,6 +255,5 @@ public class MLServiceTestCase {
         DeliveryMethod d2 = this.service.createDeliveryMethod("Moto menos 1kg", 250.0F, 0.01F, 200F);
         MLException ex = assertThrows(MLException.class, () -> this.service.createPurchase(pos, 5, u, d2, dp,"Calle 12 432",Float.valueOf(-54.45F), Float.valueOf(-62.22F), dop));
         assertEquals("Método de delivery no válido",ex.getMessage());
-    }
-    */
+    }    
 }

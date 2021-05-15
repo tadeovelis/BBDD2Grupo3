@@ -151,12 +151,20 @@ public class MLServiceImpl implements MLService {
 	@Transactional
 	public Purchase createPurchase(ProductOnSale productOnSale, Integer quantity, User client,
 			DeliveryMethod deliveryMethod, PaymentMethod paymentMethod, String address, Float coordX, Float coordY,
-			Date dateOfPurchase) throws MLException {
+			Date dateOfPurchase) throws MLException {		
+		Purchase purchase = new Purchase(productOnSale, quantity, client, deliveryMethod, paymentMethod, address, coordX, coordY, dateOfPurchase);
+
+		if (purchase.getTotalWeight() >= deliveryMethod.getStartWeight() &&
+				purchase.getTotalWeight() <= deliveryMethod.getEndWeight()) {
+			repository.save(purchase);
+			return purchase;
+		}
+		else {
+			throw new MLException("Método de delivery no válido");
+		} 
 		
-		Purchase purchase = new Purchase(productOnSale, quantity, client, deliveryMethod, paymentMethod,
-				address, coordX, coordY, dateOfPurchase);
-		repository.save(purchase);
-		return purchase;
+		
+		
 	}
 
 	@Override
