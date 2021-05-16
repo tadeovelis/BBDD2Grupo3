@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface MLService{
+public interface MLService extends MLStatisticsService{
     
 	/**
 	 * Crea y devuelve una nueva Catogoria
