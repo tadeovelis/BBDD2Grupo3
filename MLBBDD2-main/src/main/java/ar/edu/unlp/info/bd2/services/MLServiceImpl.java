@@ -242,4 +242,8 @@ public class MLServiceImpl implements MLService {
 	public List <Purchase> getPurchasesForProvider(Long cuit){
 		return this.repository.getPurchasesForProvider(cuit);
 	}
+	
+	public List <Purchase> getPurchasesInPeriod(Date startDate, Date endDate){
+		return this.repository.getPurchasesInPeriod(startDate, endDate);
+	}
 }

@@ -181,8 +181,12 @@ public interface MLService{
 	
 	List<Product> getTop3MoreExpensiveProducts();
 	*/
+	
+	
 	List <Product> getProductForCategory (Category category);
 	
 	List <Purchase> getPurchasesForProvider(Long cuit);
+	
+	List <Purchase> getPurchasesInPeriod(Date startDate, Date endDate);
 
 }

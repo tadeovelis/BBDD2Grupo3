@@ -1,6 +1,8 @@
 package ar.edu.unlp.info.bd2.repositories;
 
+import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.Query;
 
@@ -18,6 +20,7 @@ import ar.edu.unlp.info.bd2.model.ProductOnSale;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.model.Purchase;
+
 
 
 public class MLRepository{
@@ -39,6 +42,11 @@ public class MLRepository{
 		return this.sessionFactory.getCurrentSession();
 	}
 	
+	public String convertDay(Date day) {
+    	String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(day);
+	}	
 	
 	public User findUserByEmail(String email) {
 		String hql = "from User where email = :email ";
@@ -129,11 +137,12 @@ public class MLRepository{
 	public List<User> getUsersSpendingMoreThan(Float amount) {
     	return this.sessionFactory.getCurrentSession().createQuery("SELECT u  FROM Purchase p INNER JOIN User u ON(u.id = p.client) WHERE ((p.cost) > '" + amount + "')").list();
     }
-	
+		
 	public List<Product> getTop3MoreExpensiveProducts() {
-        return this.sessionFactory.getCurrentSession().createQuery("SELECT MAX(pr.price),DISTINCT(prod.id) FROM Product AS prod INNER JOIN ProductOnSale AS pr ON(prod.id = pr.product)").setMaxResults(3).list();
+        return this.sessionFactory.getCurrentSession().createQuery("SELECT prod "
+        		+ "FROM Product AS prod INNER JOIN ProductOnSale AS pr ON(prod.id = pr.product) ORDER BY pr.price ASC").setMaxResults(3).list();
     }
-	*/
+*/
 	public List <Product> getProductForCategory (Category category){
 		Long cat = category.getId();
 		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Product AS p INNER JOIN Category AS c ON (p.category = c.id) WHERE c.id = '" + cat + "'").list();
@@ -143,4 +152,23 @@ public class MLRepository{
 		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Purchase AS p INNER JOIN ProductOnSale AS pro ON (p.productOnSale = pro.id) "
 				+ "INNER JOIN Provider AS pr ON (pro.provider = pr.id) WHERE pr.cuit = '" + cuit + "'").list();
 	}
+	
+	public  List <Purchase> getPurchasesInPeriod(Date startDate, Date endDate){
+		String date_start = this.convertDay(startDate);
+		String date_end = this.convertDay(endDate);
+		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Purchase AS p WHERE p.dateOfPurchase BETWEEN '"+ date_start +"' AND '"+ date_end +"'").list(); 
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
