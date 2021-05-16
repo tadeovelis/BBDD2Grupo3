@@ -117,14 +117,14 @@ public class MLStatisticsTestCase {
     	assertEquals(4,products.size());
     	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Caldera Peisa Diva Duo Ds 32000 Kcal Tiro Forzado","Caldera Mural Orbis 230cto Solo Calefaccion 29000 Kcal Tiro Natural Con Envio","Caldera Mural Orbis 230cto Calefaccion 30000 Kcal + Envio","Caldera A Gas Baxi Eco 4s 24 Doble Servicio Tiro Forzado"));
     }
-    /*
+    
     @Test
     public void testGetPurchasesForProvider() {
     	List<Purchase> purchases = this.service.getPurchasesForProvider(21859773715L);
 		assertEquals(3,purchases.size());
 		this.assertListEquality(purchases.stream().map(property -> property.getAddress()).collect(Collectors.toList()),Arrays.asList("Calle 40 Nº137","Calle 57 Nº1637","Calle 62 Nº1158"));
     }
-    
+    /*
     @Test
     public void testGetBestSellingProduct() {
     	Product product = this.service.getBestSellingProduct();

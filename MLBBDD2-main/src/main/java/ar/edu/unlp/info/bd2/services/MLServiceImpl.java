@@ -238,4 +238,8 @@ public class MLServiceImpl implements MLService {
 	public List <Product> getProductForCategory (Category category){
 		return this.repository.getProductForCategory(category);
 	}
+	
+	public List <Purchase> getPurchasesForProvider(Long cuit){
+		return this.repository.getPurchasesForProvider(cuit);
+	}
 }

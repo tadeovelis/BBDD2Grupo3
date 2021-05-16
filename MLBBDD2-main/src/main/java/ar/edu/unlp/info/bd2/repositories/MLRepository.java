@@ -138,4 +138,9 @@ public class MLRepository{
 		Long cat = category.getId();
 		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Product AS p INNER JOIN Category AS c ON (p.category = c.id) WHERE c.id = '" + cat + "'").list();
 	}
+	
+	public List <Purchase> getPurchasesForProvider(Long cuit){
+		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Purchase AS p INNER JOIN ProductOnSale AS pro ON (p.productOnSale = pro.id) "
+				+ "INNER JOIN Provider AS pr ON (pro.provider = pr.id) WHERE pr.cuit = '" + cuit + "'").list();
+	}
 }
