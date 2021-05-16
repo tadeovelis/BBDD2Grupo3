@@ -23,30 +23,7 @@ import ar.edu.unlp.info.bd2.model.Purchase;
 
 
 
-public class MLRepository{
-	
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	public void save(Object o) {
-        try {
-        	this.sessionFactory.getCurrentSession().saveOrUpdate(o);	
-        }
-        catch (Exception e) {
-        	this.sessionFactory.getCurrentSession().clear();
-        	throw e;
-        }
-    }
-
-	public Session getSession(){
-		return this.sessionFactory.getCurrentSession();
-	}
-	
-	public String convertDay(Date day) {
-    	String pattern = "yyyy-MM-dd HH:mm:ss";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        return simpleDateFormat.format(day);
-	}	
+public class MLRepository extends CommonRepository{	
 	
 	public User findUserByEmail(String email) {
 		String hql = "from User where email = :email ";
@@ -55,7 +32,7 @@ public class MLRepository{
 		List<User> users = query.getResultList();
 		return !users.isEmpty() ? users.get(query.getFirstResult()) : null;
 	}
-	
+
 	public User findUserById(Long id) {
 		String hql = "from User where id = :id ";
 		Query query = getSession().createQuery(hql);
