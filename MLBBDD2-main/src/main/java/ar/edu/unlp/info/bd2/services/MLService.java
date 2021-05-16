@@ -176,6 +176,11 @@ public interface MLService{
 	Optional<Purchase> getPurchaseById(Long id);
 	
 	List<Purchase> getAllPurchasesMadeByUser(String username);
+	/*
+	List<User> getUsersSpendingMoreThanInPurchase(Float amount);
 	
+	List<Product> getTop3MoreExpensiveProducts();
+	*/
+	List <Product> getProductForCategory (Category category);
 
 }

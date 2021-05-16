@@ -226,4 +226,16 @@ public class MLServiceImpl implements MLService {
 	public List<Purchase> getAllPurchasesMadeByUser(String username){
 		return this.repository.getAllPurchasesMadeByUser(username);
 	}
+	/*
+	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
+		return this.repository.getUsersSpendingMoreThanInPurchase(amount);
+	}
+	
+	public List<Product> getTop3MoreExpensiveProducts(){
+		return this.repository.getTop3MoreExpensiveProducts();
+	}
+	*/
+	public List <Product> getProductForCategory (Category category){
+		return this.repository.getProductForCategory(category);
+	}
 }
