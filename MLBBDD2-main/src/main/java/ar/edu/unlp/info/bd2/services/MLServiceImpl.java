@@ -305,10 +305,8 @@ public class MLServiceImpl implements MLService {
 	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
 		List<Product> products = this.getAllProducts();
 		List<Product> resultProducts = new ArrayList<Product>();
-		int count = 0;
 		for (Product p : products) {
 			if (this.differenceInProductPriceIsMoreThan20Percent(p.getId())) {
-				count++;
 				resultProducts.add(p);
 			}
 		}
@@ -321,11 +319,21 @@ public class MLServiceImpl implements MLService {
 	}
 	
 	// Dice si la diferencia de precio entre el más bajo y el mayor para un producto es mayor al 20 porciento
+	// y tienen que ser de distinto proveedor
 	private boolean differenceInProductPriceIsMoreThan20Percent(Long id) {
-		Float highestPrice = this.repositoryStatistics.getHighestPriceForProduct(id);
-		Float lowestPrice = this.repositoryStatistics.getLowestPriceForProduct(id);
-		Float dif = highestPrice - lowestPrice;
-		return (dif > (lowestPrice * 0.2));
+		List<ProductOnSale> productsOnSale = this.repositoryStatistics.getProductOnSaleOrderedByPricesForProduct(id);
+		if (!productsOnSale.isEmpty()) {
+			ProductOnSale posHighestPrice = productsOnSale.get(productsOnSale.size()-1);
+			ProductOnSale posLowestPrice = productsOnSale.get(0);
+			// Tienen que ser de distinto proveedor
+			if (posHighestPrice.getProvider() != posLowestPrice.getProvider()) {
+				Float lowestPrice = posLowestPrice.getPrice();
+				Float dif = posHighestPrice.getPrice() - lowestPrice;
+				// Chequeo el porcentaje
+				return (dif > (lowestPrice * 0.2));
+			}
+		}
+		return false;
 	}
 
 
