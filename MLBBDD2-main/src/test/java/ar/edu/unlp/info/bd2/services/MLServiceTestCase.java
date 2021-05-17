@@ -32,6 +32,9 @@ public class MLServiceTestCase {
     @Autowired
     private MLService service;
     
+    /* Comento todos estos tests para que me quede llena la db para probar mejor los tests del TP2 */
+    
+    /*
     @Test
     public void testCreateUser() throws MLException{
         Calendar cal = Calendar.getInstance();
@@ -255,5 +258,6 @@ public class MLServiceTestCase {
         DeliveryMethod d2 = this.service.createDeliveryMethod("Moto menos 1kg", 250.0F, 0.01F, 200F);
         MLException ex = assertThrows(MLException.class, () -> this.service.createPurchase(pos, 5, u, d2, dp,"Calle 12 432",Float.valueOf(-54.45F), Float.valueOf(-62.22F), dop));
         assertEquals("Método de delivery no válido",ex.getMessage());
-    }    
+    }   
+    */
 }

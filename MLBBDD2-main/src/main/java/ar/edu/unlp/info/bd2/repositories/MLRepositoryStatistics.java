@@ -150,10 +150,5 @@ public class MLRepositoryStatistics extends CommonRepository{
 		List<Category> categories = query.getResultList();
 		return !categories.isEmpty() ? categories.get(query.getFirstResult()) : null;
 	}
-
-	/*
-	public Product getBestSellingProduct() {
-	}
-	*/
 	
 }
