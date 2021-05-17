@@ -164,4 +164,23 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
 	}
 	
+	// Para realizar el testGetMoreChangeOnDeliveryMethod
+	public Purchase getPurchaseOfOnDeliveryPayment(Long odp_id) {
+		String hql = 
+				"SELECT pu FROM Purchase pu WHERE pu.paymentMethod = " + odp_id;
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga el primero solamente
+		List<Purchase> purchases = query.getResultList();
+		return !purchases.isEmpty() ? purchases.get(query.getFirstResult()) : null;
+	}
+	
+	// Para realizar el testGetMoreChangeOnDeliveryMethod
+	public List<OnDeliveryPayment> getAllOnDeliveryPayment() {
+		String hql = 
+				"SELECT odp FROM OnDeliveryPayment odp";
+		Query query = getSession().createQuery(hql);
+		List<OnDeliveryPayment> onDeliveryPayments = query.getResultList();
+		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments : null;
+	}
+	
 }

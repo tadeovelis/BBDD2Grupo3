@@ -339,8 +339,36 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
-		// TODO Auto-generated method stub
-		return null;
+		// Me traigo todos los onDeliveryPayments
+		List<OnDeliveryPayment> odps = this.getAllOnDeliveryPayment();
+		
+		// Variables para el máximo
+		OnDeliveryPayment maxOdp = null;
+		Float maxChange = 0F;
+	
+		// Recorro la lista de odps
+		for (OnDeliveryPayment odp : odps) {
+			// Me traigo el purchase del odp
+			Purchase odpPu = this.getPurchaseOfOnDeliveryPayment(odp.getId());
+			// Calculo el vuelto
+			Float odpChange = odp.getPromisedAmount() - odpPu.getAmount();
+			
+			// Actualizo (de ser necesario) el máximo
+			if (odpChange > maxChange) {
+				maxChange = odpChange;
+				maxOdp = odp;
+			}
+		}
+		return maxOdp;
+	}
+	
+	// Devuelve todos los odps
+	public List<OnDeliveryPayment> getAllOnDeliveryPayment() {
+		return this.repositoryStatistics.getAllOnDeliveryPayment();
+	}
+	// Devuelve el purchase dado un onDeliveryPayment.ID
+	public Purchase getPurchaseOfOnDeliveryPayment(Long odp_id) {
+		return this.repositoryStatistics.getPurchaseOfOnDeliveryPayment(odp_id);
 	}
 
 

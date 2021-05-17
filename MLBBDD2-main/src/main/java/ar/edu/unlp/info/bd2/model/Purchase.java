@@ -132,5 +132,4 @@ public class Purchase {
 	public float getTotalWeight() {
 		return (this.quantity * this.productOnSale.getProduct().getWeight());
 	}
-	
 }
