@@ -36,12 +36,12 @@ public class MLRepositoryStatistics extends CommonRepository{
 	public List<User> getUsersSpendingMoreThan(Float amount) {
     	return this.sessionFactory.getCurrentSession().createQuery("SELECT u  FROM Purchase p INNER JOIN User u ON(u.id = p.client) WHERE ((p.cost) > '" + amount + "')").list();
     }
-		
+	*/	
 	public List<Product> getTop3MoreExpensiveProducts() {
         return this.sessionFactory.getCurrentSession().createQuery("SELECT prod "
-        		+ "FROM Product AS prod INNER JOIN ProductOnSale AS pr ON(prod.id = pr.product) ORDER BY pr.price ASC").setMaxResults(3).list();
+        		+ "FROM Product AS prod INNER JOIN ProductOnSale AS pr ON(prod.id = pr.product) ORDER BY pr.price desc").setMaxResults(3).list();
     }
-*/
+
 	public List <Product> getProductForCategory (Category category){
 		Long cat = category.getId();
 		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Product AS p INNER JOIN Category AS c ON (p.category = c.id) WHERE c.id = '" + cat + "'").list();
