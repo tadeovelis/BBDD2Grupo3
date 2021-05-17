@@ -151,4 +151,17 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !categories.isEmpty() ? categories.get(query.getFirstResult()) : null;
 	}
 	
+	public Product getBestSellingProduct() {
+		String hql = 
+				"SELECT p FROM Product p INNER JOIN ProductOnSale pos ON (p.id = pos.product) "
+				+ "INNER JOIN Purchase pu ON (pos.id = pu.productOnSale) "
+				+ "GROUP BY p.id "
+				+ "ORDER BY count(*) DESC";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga el primero solamente
+		query.setMaxResults(1);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
+	}
+	
 }
