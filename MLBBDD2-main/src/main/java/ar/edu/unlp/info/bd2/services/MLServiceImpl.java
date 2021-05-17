@@ -1,6 +1,8 @@
 package ar.edu.unlp.info.bd2.services;
 import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.repositories.MLRepository;
+import ar.edu.unlp.info.bd2.repositories.MLRepositoryStatistics;
+import ar.edu.unlp.info.bd2.repositories.CommonRepository;
 import ar.edu.unlp.info.bd2.repositories.MLException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +23,12 @@ public class MLServiceImpl implements MLService {
 
 	@Autowired
 	private MLRepository repository;
+	@Autowired
+	private MLRepositoryStatistics repositoryStatistics;
 
-	public MLServiceImpl(MLRepository repository) {
+	public MLServiceImpl(MLRepository repository, MLRepositoryStatistics repositoryStatistics) {
 		this.repository = repository;
+		this.repositoryStatistics = repositoryStatistics;
 	}
 	
 	
@@ -224,7 +229,7 @@ public class MLServiceImpl implements MLService {
 	}
 	
 	public List<Purchase> getAllPurchasesMadeByUser(String username){
-		return this.repository.getAllPurchasesMadeByUser(username);
+		return this.repositoryStatistics.getAllPurchasesMadeByUser(username);
 	}
 	/*
 	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
@@ -236,15 +241,15 @@ public class MLServiceImpl implements MLService {
 	}
 	*/
 	public List <Product> getProductForCategory (Category category){
-		return this.repository.getProductForCategory(category);
+		return this.repositoryStatistics.getProductForCategory(category);
 	}
 	
 	public List <Purchase> getPurchasesForProvider(Long cuit){
-		return this.repository.getPurchasesForProvider(cuit);
+		return this.repositoryStatistics.getPurchasesForProvider(cuit);
 	}
 	
 	public List <Purchase> getPurchasesInPeriod(Date startDate, Date endDate){
-		return this.repository.getPurchasesInPeriod(startDate, endDate);
+		return this.repositoryStatistics.getPurchasesInPeriod(startDate, endDate);
 	}
 
 
@@ -292,8 +297,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public List<Product> getProductsOnePrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getProductsOnePrice();
 	}
 
 
@@ -306,36 +310,31 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Provider getProviderLessExpensiveProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getProviderLessExpensiveProduct();
 	}
 
 
 	@Override
 	public List<Provider> getProvidersDoNotSellOn(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getProviderDoNotSellOn(day);
 	}
 
 
 	@Override
 	public List<ProductOnSale> getSoldProductsOn(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getSoldProductsOn(day);
 	}
 
 
 	@Override
 	public List<Product> getProductsNotSold() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getProductsNotSold();
 	}
 
 
 	@Override
 	public DeliveryMethod getMostUsedDeliveryMethod() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getMostUsedDeliveryMethod();
 	}
 
 
@@ -348,14 +347,12 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Product getHeaviestProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getHeaviestProduct();
 	}
 
 
 	@Override
 	public Category getCategoryWithLessProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getCategoryWithLessProducts();
 	}
 }

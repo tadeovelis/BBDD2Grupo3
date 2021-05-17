@@ -57,7 +57,103 @@ public class MLRepositoryStatistics extends CommonRepository{
 		String date_start = paraConvertirFechas.convertDay(startDate);
 		String date_end = paraConvertirFechas.convertDay(endDate);
 		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Purchase AS p WHERE p.dateOfPurchase BETWEEN '"+ date_start +"' AND '"+ date_end +"'").list(); 
-		
 	}
+	
+	public List<Product> getProductsOnePrice() {
+		String hql = 
+				"SELECT p FROM Product p WHERE EXISTS ("
+				+ "SELECT pro.product, count(*) "
+				+ "FROM ProductOnSale pro INNER JOIN Product p2 ON (pro.product = p2.id) "
+				+ "WHERE pro.product = p.id "
+				+ "GROUP BY pro.product "
+				+ "HAVING count(*) = 1"
+			+ ")";
+		Query query = getSession().createQuery(hql);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products : null;
+	}
+
+	public Provider getProviderLessExpensiveProduct() {
+		String hql = 
+				"SELECT p FROM Provider p INNER JOIN ProductOnSale pos ON "
+				+ "(p.id = pos.provider) "
+				+ "WHERE pos.price = ("
+					+ "SELECT min(price) "
+					+ "FROM ProductOnSale"
+				+ ")";
+		Query query = getSession().createQuery(hql);
+		List<Provider> providers = query.getResultList();
+		return !providers.isEmpty() ? providers.get(query.getFirstResult()) : null;
+	}
+
+	public List<Provider> getProviderDoNotSellOn(Date day) {
+		String dayConverted = this.convertDay(day);
+		String hql = 
+				"SELECT distinct p FROM Provider p INNER JOIN ProductOnSale pos ON (p.id = pos.provider) "
+				+ "INNER JOIN Purchase pu ON (pu.productOnSale = pos.id) "
+				+ "WHERE pu.dateOfPurchase != '" + dayConverted + "'";
+		Query query = getSession().createQuery(hql);
+		List<Provider> providers = query.getResultList();
+		return !providers.isEmpty() ? providers : null;
+	}
+
+	public List<ProductOnSale> getSoldProductsOn(Date day) {
+		String dayConverted = this.convertDay(day);
+		String hql = 
+				"SELECT distinct p FROM ProductOnSale p INNER JOIN Purchase pu ON (p.id = pu.productOnSale) "
+				+ "WHERE pu.dateOfPurchase = '" + dayConverted + "'";
+		Query query = getSession().createQuery(hql);
+		List<ProductOnSale> productsOnSale = query.getResultList();
+		return !productsOnSale.isEmpty() ? productsOnSale : null;
+	}
+
+	public List<Product> getProductsNotSold() {
+		String hql = 
+				"SELECT p FROM Product p WHERE not exists ("
+				+ "SELECT 1 FROM ProductOnSale pos INNER JOIN Purchase pu ON (pos.id = pu.productOnSale) "
+				+ "WHERE pos.product = p.id)";
+		Query query = getSession().createQuery(hql);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products : null;
+	}
+
+	public DeliveryMethod getMostUsedDeliveryMethod() {
+		String hql = 
+				"SELECT dm FROM DeliveryMethod dm INNER JOIN Purchase pu ON (dm.id = pu.deliveryMethod) "
+				+ "GROUP BY pu.deliveryMethod "
+				+ "ORDER BY count(*) DESC";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga el primero solamente
+		query.setMaxResults(1);
+		List<DeliveryMethod> deliveryMethods = query.getResultList();
+		return !deliveryMethods.isEmpty() ? deliveryMethods.get(query.getFirstResult()) : null;
+	}
+
+	public Product getHeaviestProduct() {
+		String hql = 
+				"SELECT p FROM Product p ORDER BY p.weight DESC";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga el primero solamente
+		query.setMaxResults(1);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
+	}
+
+	public Category getCategoryWithLessProducts() {
+		String hql = 
+				"SELECT c FROM Category c INNER JOIN Product p ON (c.id = p.category) "
+				+ "GROUP BY c.id "
+				+ "ORDER BY count(*) ASC";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga el primero solamente
+		query.setMaxResults(1);
+		List<Category> categories = query.getResultList();
+		return !categories.isEmpty() ? categories.get(query.getFirstResult()) : null;
+	}
+
+	/*
+	public Product getBestSellingProduct() {
+	}
+	*/
 	
 }

@@ -90,7 +90,7 @@ public class MLStatisticsTestCase {
     	assertEquals(3, products.size());
     	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Salamandra A Leña Tromen Pehuen 9500 Kcal/h 106 M2 Cuotas","Lavarropas  automático Samsung WW90J5410G inverter plata 9kg 220 V","Nebulizador a pistón Omron NE-C801 blanco 100V/240V"));
     }
-
+    
     @Test
     public void testGetTopNUsersMorePurchase() {
     	List<User> users = this.service.getTopNUsersMorePurchase(7);
@@ -99,6 +99,7 @@ public class MLStatisticsTestCase {
 
     }
     */
+    
     @Test
     public void testGetPurchasesInPeriod() throws ParseException {
     	List<Purchase> purchases = this.service.getPurchasesInPeriod(sdf.parse("8/1/2020"),sdf.parse("20/01/2020"));
@@ -130,7 +131,7 @@ public class MLStatisticsTestCase {
     	Product product = this.service.getBestSellingProduct();
     	assertEquals(product.getName(),"Lavarropas  automático Samsung WW90J5410G inverter plata 9kg 220 V");
     }
-    
+    */
     @Test
     public void testGetProductsOnePrice() {
     	List<Product> products = this.service.getProductsOnePrice();
@@ -168,6 +169,7 @@ public class MLStatisticsTestCase {
     	assertEquals("Flete",dm.getName());
     }
     
+    /*
     @Test
     public void testGetMoreChangeOnDeliveryMethod() {
     	OnDeliveryPayment odp = this.service.getMoreChangeOnDeliveryMethod();
@@ -179,6 +181,7 @@ public class MLStatisticsTestCase {
     	List<Product> products = this.service.getProductWithMoreThan20percentDiferenceInPrice();
     	assertEquals(29,products.size());
     }
+    */
     
     @Test
     public void testGetHeaviestProduct() {
@@ -191,5 +194,4 @@ public class MLStatisticsTestCase {
     	Category category = this.service.getCategoryWithLessProducts();
     	assertEquals("Calderas", category.getName());
     }
-    */
 }
