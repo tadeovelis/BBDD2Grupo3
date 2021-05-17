@@ -11,6 +11,7 @@ import ar.edu.unlp.info.bd2.model.ProductOnSale;
 import ar.edu.unlp.info.bd2.model.Purchase;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.repositories.MLException;
 
 public interface MLStatisticsService {
 	
@@ -23,6 +24,7 @@ public interface MLStatisticsService {
 	/**
 	 * @param amount
 	 * @return una lista de los usuarios que han gastando más de <code>amount</code> en alguna compra en la plataforma
+	 * @throws MLException 
 	 */
 	List<User> getUsersSpendingMoreThanInPurchase(Float amount);
 	
