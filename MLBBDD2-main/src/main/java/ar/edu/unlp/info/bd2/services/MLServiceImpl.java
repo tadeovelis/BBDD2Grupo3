@@ -235,11 +235,8 @@ public class MLServiceImpl implements MLService {
 	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
 		return this.repository.getUsersSpendingMoreThanInPurchase(amount);
 	}
-	
-	public List<Product> getTop3MoreExpensiveProducts(){
-		return this.repository.getTop3MoreExpensiveProducts();
-	}
 	*/
+	
 	public List <Product> getProductForCategory (Category category){
 		return this.repositoryStatistics.getProductForCategory(category);
 	}
@@ -276,8 +273,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public List<Product> getTop3MoreExpensiveProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getTop3MoreExpensiveProducts();
 	}
 
 
