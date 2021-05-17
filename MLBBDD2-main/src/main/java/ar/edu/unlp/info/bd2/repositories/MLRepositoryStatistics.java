@@ -183,4 +183,33 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments : null;
 	}
 	
+	
+	// Para realizar el testGetProductWithMoreThan20percentDiferenceInPrice
+	public List<Product> getAllProducts() {
+		String hql = 
+				"SELECT p FROM Product p";
+		Query query = getSession().createQuery(hql);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products : null;
+	}
+	
+	// Para realizar el testGetProductWithMoreThan20percentDiferenceInPrice
+	public List<Float> getOrderedPricesForProduct(Long id) {
+		String hql = 
+				"SELECT pos.price FROM Product p INNER JOIN ProductOnSale pos ON (p.id = pos.product) "
+				+ "WHERE pos.product = " + id +" "
+				+ "ORDER BY pos.price";
+		Query query = getSession().createQuery(hql);
+		List<Float> prices = query.getResultList();
+		return !prices.isEmpty() ? prices : null;
+	}
+	public Float getHighestPriceForProduct(Long id) {
+		List<Float> prices = this.getOrderedPricesForProduct(id);
+		return prices != null ? prices.get(prices.size()-1) : 0;
+	}
+	public Float getLowestPriceForProduct(Long id) {
+		List<Float> prices = this.getOrderedPricesForProduct(id);
+		return prices != null ? prices.get(0) : 0; 
+	}
+	
 }

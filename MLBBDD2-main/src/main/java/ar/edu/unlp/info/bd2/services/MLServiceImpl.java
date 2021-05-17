@@ -7,6 +7,7 @@ import ar.edu.unlp.info.bd2.repositories.MLException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -302,8 +303,29 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> products = this.getAllProducts();
+		List<Product> resultProducts = new ArrayList<Product>();
+		int count = 0;
+		for (Product p : products) {
+			if (this.differenceInProductPriceIsMoreThan20Percent(p.getId())) {
+				count++;
+				resultProducts.add(p);
+			}
+		}
+		return resultProducts;
+	}
+
+	// Devuelve todos los productos
+	public List<Product> getAllProducts() {
+		return this.repositoryStatistics.getAllProducts();
+	}
+	
+	// Dice si la diferencia de precio entre el más bajo y el mayor para un producto es mayor al 20 porciento
+	private boolean differenceInProductPriceIsMoreThan20Percent(Long id) {
+		Float highestPrice = this.repositoryStatistics.getHighestPriceForProduct(id);
+		Float lowestPrice = this.repositoryStatistics.getLowestPriceForProduct(id);
+		Float dif = highestPrice - lowestPrice;
+		return (dif > (lowestPrice * 0.2));
 	}
 
 
