@@ -283,8 +283,9 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public List<User> getTopNUsersMorePurchase(int n) {
-		// TODO Auto-generated method stub
-		return null;
+		if(n>1)
+			return this.repositoryStatistics.getTopNUsersMorePurchase(n);
+		else return null;
 	}
 
 

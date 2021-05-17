@@ -151,4 +151,17 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !categories.isEmpty() ? categories.get(query.getFirstResult()) : null;
 	}
 	
+	public List<User> getTopNUsersMorePurchase(int n) {
+		String hql = "SELECT u "
+				+ "FROM Purchase pur inner join User u on u.id =pur.client "
+				+ "group by pur.client "
+				+ "order by count(pur.client) desc ";
+		
+		Query query = getSession().createQuery(hql);
+		query.setMaxResults(n);
+		return query.getResultList();
+	}
+	
+	
+	
 }
