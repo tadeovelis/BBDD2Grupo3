@@ -33,7 +33,6 @@ public class MLServiceTestCase {
     private MLService service;
     
     /* Comento todos estos tests para que me quede llena la db para probar mejor los tests del TP2 */
-    
     /*
     @Test
     public void testCreateUser() throws MLException{
@@ -221,7 +220,8 @@ public class MLServiceTestCase {
         Date id3 = cal.getTime();
         MLException ex = assertThrows(MLException.class, () -> this.service.createProductOnSale(prod, p, 200F, id3));
         assertEquals("Ya existe un precio para el producto con fecha de inicio de vigencia posterior a la fecha de inicio dada" ,ex.getMessage());
-    }    
+    }  
+    
     @Test
     public void testCreatePurchase() throws MLException {
         Provider p = this.service.createProvider("Philips",30715589634L);

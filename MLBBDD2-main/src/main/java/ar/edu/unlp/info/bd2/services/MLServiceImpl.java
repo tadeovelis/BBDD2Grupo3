@@ -7,6 +7,7 @@ import ar.edu.unlp.info.bd2.repositories.MLException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -291,8 +292,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public Product getBestSellingProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getBestSellingProduct();
 	}
 
 
@@ -304,8 +304,37 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> products = this.getAllProducts();
+		List<Product> resultProducts = new ArrayList<Product>();
+		for (Product p : products) {
+			if (this.differenceInProductPriceIsMoreThan20Percent(p.getId())) {
+				resultProducts.add(p);
+			}
+		}
+		return resultProducts;
+	}
+
+	// Devuelve todos los productos
+	public List<Product> getAllProducts() {
+		return this.repositoryStatistics.getAllProducts();
+	}
+	
+	// Dice si la diferencia de precio entre el más bajo y el mayor para un producto es mayor al 20 porciento
+	// y tienen que ser de distinto proveedor
+	private boolean differenceInProductPriceIsMoreThan20Percent(Long id) {
+		List<ProductOnSale> productsOnSale = this.repositoryStatistics.getProductOnSaleOrderedByPricesForProduct(id);
+		if (!productsOnSale.isEmpty()) {
+			ProductOnSale posHighestPrice = productsOnSale.get(productsOnSale.size()-1);
+			ProductOnSale posLowestPrice = productsOnSale.get(0);
+			// Tienen que ser de distinto proveedor
+			if (posHighestPrice.getProvider() != posLowestPrice.getProvider()) {
+				Float lowestPrice = posLowestPrice.getPrice();
+				Float dif = posHighestPrice.getPrice() - lowestPrice;
+				// Chequeo el porcentaje
+				return (dif > (lowestPrice * 0.2));
+			}
+		}
+		return false;
 	}
 
 
@@ -341,8 +370,36 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
-		// TODO Auto-generated method stub
-		return null;
+		// Me traigo todos los onDeliveryPayments
+		List<OnDeliveryPayment> odps = this.getAllOnDeliveryPayment();
+		
+		// Variables para el máximo
+		OnDeliveryPayment maxOdp = null;
+		Float maxChange = 0F;
+	
+		// Recorro la lista de odps
+		for (OnDeliveryPayment odp : odps) {
+			// Me traigo el purchase del odp
+			Purchase odpPu = this.getPurchaseOfOnDeliveryPayment(odp.getId());
+			// Calculo el vuelto
+			Float odpChange = odp.getPromisedAmount() - odpPu.getAmount();
+			
+			// Actualizo (de ser necesario) el máximo
+			if (odpChange > maxChange) {
+				maxChange = odpChange;
+				maxOdp = odp;
+			}
+		}
+		return maxOdp;
+	}
+	
+	// Devuelve todos los odps
+	public List<OnDeliveryPayment> getAllOnDeliveryPayment() {
+		return this.repositoryStatistics.getAllOnDeliveryPayment();
+	}
+	// Devuelve el purchase dado un onDeliveryPayment.ID
+	public Purchase getPurchaseOfOnDeliveryPayment(Long odp_id) {
+		return this.repositoryStatistics.getPurchaseOfOnDeliveryPayment(odp_id);
 	}
 
 

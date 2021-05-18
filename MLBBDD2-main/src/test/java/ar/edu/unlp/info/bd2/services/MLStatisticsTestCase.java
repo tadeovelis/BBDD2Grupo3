@@ -125,13 +125,13 @@ public class MLStatisticsTestCase {
 		assertEquals(3,purchases.size());
 		this.assertListEquality(purchases.stream().map(property -> property.getAddress()).collect(Collectors.toList()),Arrays.asList("Calle 40 Nº137","Calle 57 Nº1637","Calle 62 Nº1158"));
     }
-    /*
+    
     @Test
     public void testGetBestSellingProduct() {
     	Product product = this.service.getBestSellingProduct();
     	assertEquals(product.getName(),"Lavarropas  automático Samsung WW90J5410G inverter plata 9kg 220 V");
     }
-    */
+    
     @Test
     public void testGetProductsOnePrice() {
     	List<Product> products = this.service.getProductsOnePrice();
@@ -169,7 +169,6 @@ public class MLStatisticsTestCase {
     	assertEquals("Flete",dm.getName());
     }
     
-    /*
     @Test
     public void testGetMoreChangeOnDeliveryMethod() {
     	OnDeliveryPayment odp = this.service.getMoreChangeOnDeliveryMethod();
@@ -181,7 +180,6 @@ public class MLStatisticsTestCase {
     	List<Product> products = this.service.getProductWithMoreThan20percentDiferenceInPrice();
     	assertEquals(29,products.size());
     }
-    */
     
     @Test
     public void testGetHeaviestProduct() {
