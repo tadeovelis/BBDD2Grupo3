@@ -102,5 +102,13 @@ public class MLRepository extends CommonRepository{
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return !productsOnSale.isEmpty() ? productsOnSale : null;
 	}
+
+	public ProductOnSale getProductOnSaleById(Long id) {
+		String hql = "from ProductOnSale where id = :id ";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("id", id);
+		List<ProductOnSale> productsOnSale = query.getResultList();
+		return !productsOnSale.isEmpty() ? productsOnSale.get(query.getFirstResult()) : null;
+	}
 	
 }

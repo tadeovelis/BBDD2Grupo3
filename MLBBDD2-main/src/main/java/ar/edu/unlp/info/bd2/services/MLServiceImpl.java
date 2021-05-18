@@ -200,8 +200,7 @@ public class MLServiceImpl implements MLService {
 	@Override
 	@Transactional
 	public ProductOnSale getProductOnSaleById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repository.getProductOnSaleById(id);
 	}
 
 	@Override
