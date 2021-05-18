@@ -30,7 +30,6 @@ public class MLRepositoryStatistics extends CommonRepository{
 	}
 	
 	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
-		
 		String hql = "SELECT pur.client "
 				+"from Purchase pur "
 				+"where ("+amount+" < ((pur.quantity * pur.productOnSale.price)+pur.deliveryMethod.cost))"
@@ -39,11 +38,13 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return query.getResultList();		
 	}
 	
-	/*
-	public List<User> getUsersSpendingMoreThan(Float amount) {
-    	return this.sessionFactory.getCurrentSession().createQuery("SELECT u  FROM Purchase p INNER JOIN User u ON(u.id = p.client) WHERE ((p.cost) > '" + amount + "')").list();
-    }
-	*/	
+	// Para realizar testGetUserSpendingMoreThan
+	public List<User> getAllUsers() {
+		String hql = "SELECT u FROM User u";
+		Query query = getSession().createQuery(hql);
+		return query.getResultList();
+	}
+	
 	public List<Product> getTop3MoreExpensiveProducts() {
         return this.sessionFactory.getCurrentSession().createQuery("SELECT prod "
         		+ "FROM Product AS prod INNER JOIN ProductOnSale AS pr ON(prod.id = pr.product) ORDER BY pr.price desc").setMaxResults(3).list();
@@ -56,7 +57,7 @@ public class MLRepositoryStatistics extends CommonRepository{
 	
 	public List <Purchase> getPurchasesForProvider(Long cuit){
 		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Purchase AS p INNER JOIN ProductOnSale AS pro ON (p.productOnSale = pro.id) "
-				+ "INNER JOIN Provider AS pr ON (pro.provider = p)r.id) WHERE pr.cuit = '" + cuit + "'").list();
+				+ "INNER JOIN Provider AS pr ON (pro.provider = pr.id) WHERE pr.cuit = '" + cuit + "'").list();
 	}
 	
 	public  List <Purchase> getPurchasesInPeriod(Date startDate, Date endDate){
@@ -220,5 +221,18 @@ public class MLRepositoryStatistics extends CommonRepository{
 		Query query = getSession().createQuery(hql);
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return productsOnSale;
+	}
+
+	public List<Provider> getTopNProvidersInPurchases(int n) {
+		String hql = 
+				"SELECT pro FROM Provider pro INNER JOIN ProductOnSale pos ON (pro.id = pos.provider) "
+				+ "INNER JOIN Purchase pu ON (pu.productOnSale = pos.id) "
+				+ "GROUP BY pro.id "
+				+ "ORDER BY count(*) DESC";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga solo los n primeros
+		query.setMaxResults(n);
+		List<Provider> providers = query.getResultList();
+		return !providers.isEmpty() ? providers : null;
 	}
 }

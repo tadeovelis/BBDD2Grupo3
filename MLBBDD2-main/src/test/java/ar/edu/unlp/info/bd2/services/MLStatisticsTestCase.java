@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(false)
+@Rollback(true)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
 public class MLStatisticsTestCase {
@@ -62,7 +62,7 @@ public class MLStatisticsTestCase {
     public void testGetAllPurchasesMadeByUser() {
     	assertEquals(5,this.service.getAllPurchasesMadeByUser("silviasez428@gmail.com").size());
     }
-    /*
+    
     @Test
     public void testGetUsersSpendingMoreThanInPurchase() {
     	List<User> users = this.service.getUsersSpendingMoreThanInPurchase(Float.valueOf(920000F));
@@ -83,7 +83,7 @@ public class MLStatisticsTestCase {
     	assertEquals(3,providers.size());
     	this.assertListEquality(providers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Grupo Nucleo S.A.","Refrigeracion MG Repuestos","Seara Refrigeración S.H."));
     }
- */
+ 
     @Test
     public void testGetTop3MoreExpensiveProducts() {
     	List<Product> products = this.service.getTop3MoreExpensiveProducts();
@@ -98,7 +98,6 @@ public class MLStatisticsTestCase {
     	this.assertListEquality(users.stream().map(property -> property.getEmail()).collect(Collectors.toList()),Arrays.asList("silviasez428@gmail.com","matiasherrero831@gmail.com","santiagoserrano157@yahoo.com","silviaromero99@me.com","florenciaalonso505@yahoo.com","paulacaballero154@yahoo.com","paulamorales955@yahoo.com"));
 
     }
-    
     
     @Test
     public void testGetPurchasesInPeriod() throws ParseException {

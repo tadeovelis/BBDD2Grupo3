@@ -255,24 +255,29 @@ public class MLServiceImpl implements MLService {
 	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
 		if (amount>=0F ) {
 			return this.repositoryStatistics.getUsersSpendingMoreThanInPurchase(amount);
-	}
+		}
 		else 
-			return null;	
-		
+			return null;
 	}
 	
 
 	@Override
 	public List<User> getUsersSpendingMoreThan(Float amount) {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> users = this.repositoryStatistics.getAllUsers();
+		List<User> resultUsers = new ArrayList<User>();
+		for (User u : users) {
+			List<Purchase> purchases = this.repositoryStatistics.getAllPurchasesMadeByUser(u.getEmail());
+			Float total = 0F;
+			for (Purchase p : purchases) total += p.getAmount();
+			if (total > amount) resultUsers.add(u);
+		}
+		return resultUsers;
 	}
 
 
 	@Override
 	public List<Provider> getTopNProvidersInPurchases(int n) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repositoryStatistics.getTopNProvidersInPurchases(n);
 	}
 
 
