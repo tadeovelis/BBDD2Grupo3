@@ -85,7 +85,8 @@ public class MLRepositoryStatistics extends CommonRepository{
 		String hql = 
 				"SELECT p FROM Provider p INNER JOIN ProductOnSale pos ON "
 				+ "(p.id = pos.provider) "
-				+ "WHERE pos.price = ("
+				+ "WHERE pos.finalDate is null and "
+				+ "pos.price = ("
 					+ "SELECT min(price) "
 					+ "FROM ProductOnSale"
 				+ ")";
