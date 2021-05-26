@@ -91,11 +91,12 @@ public class MLRepository extends CommonRepository{
 
 	/*
 	 * Te devuelve una lista con todos los ProductsOnSale que matcheen
-	 * con product y provider
+	 * con product y provider ordenados por initialDate de forma descendente
 	 * Si no hay ninguno devuelve null
 	 */
-	public List<ProductOnSale> findProductsOnSaleByProductAndProvider(Product product, Provider provider) {
-		String hql = "from ProductOnSale where product_id = :product and provider_id = :provider";
+	public List<ProductOnSale> findProductsOnSaleByProductAndProviderOrderByInitialDateDesc(Product product, Provider provider) {
+		String hql = "from ProductOnSale where product_id = :product and provider_id = :provider "
+				+ "order by initialDate desc";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("product", product.getId());
 		query.setParameter("provider", provider.getId());

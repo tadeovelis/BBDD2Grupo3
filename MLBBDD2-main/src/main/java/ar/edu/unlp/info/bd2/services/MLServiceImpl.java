@@ -99,7 +99,12 @@ public class MLServiceImpl implements MLService {
 	public CreditCardPayment createCreditCardPayment(String name, String brand, Long number, Date expiry, Integer cvv,
 			String owner) throws MLException {
 		CreditCardPayment creditCardPayment = new CreditCardPayment(name, brand, number, expiry, cvv, owner);
-		repository.save(creditCardPayment);
+		try {
+			repository.save(creditCardPayment);
+		}
+		catch(ConstraintViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
 		return creditCardPayment;
 	}
 
@@ -116,12 +121,12 @@ public class MLServiceImpl implements MLService {
 	public ProductOnSale createProductOnSale(Product product, Provider provider, Float price, Date initialDate)
 			throws MLException {
 		// Chequear si el producto ya tiene un precio para ese proveedor
-		Optional<List<ProductOnSale>> pos = this.getProductsOnSaleByProductAndProvider(product, provider);
+		Optional<List<ProductOnSale>> pos = this.getProductsOnSaleByProductAndProviderOrderByInitialDateDesc(product, provider);
 		// Si ya tiene tengo que fijarme que la initialDate sea posterior a la initialDate actual
 		// Después, si la initialDate está bien, le actualizo la finalDate de null a initialDate - 1 día
 		if (pos.isPresent()) {
 			// Me agarro el precio más nuevo
-			ProductOnSale p = pos.get().get(pos.get().size()-1);
+			ProductOnSale p = pos.get().get(0);
 			// Comparo las dates
 			if (initialDate.after(p.getInitialDate()) || initialDate.equals(p.getInitialDate())) { 
 				// Le pongo como finalDate la initialDate - 1 día
@@ -149,8 +154,8 @@ public class MLServiceImpl implements MLService {
 		return productOnSale;
 	}
 	
-	public Optional<List<ProductOnSale>> getProductsOnSaleByProductAndProvider(Product product, Provider provider) {
-		return Optional.ofNullable(this.repository.findProductsOnSaleByProductAndProvider(product, provider));
+	public Optional<List<ProductOnSale>> getProductsOnSaleByProductAndProviderOrderByInitialDateDesc(Product product, Provider provider) {
+		return Optional.ofNullable(this.repository.findProductsOnSaleByProductAndProviderOrderByInitialDateDesc(product, provider));
 	}
 
 	@Override

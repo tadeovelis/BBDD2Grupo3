@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class CreditCardPayment extends PaymentMethod {
     private Long id;
     */
 	private String brand;
+	@Column(unique=true)
 	private Long number;
 	private Date expiry;
 	private Integer cvv;
