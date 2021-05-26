@@ -14,7 +14,6 @@ public class OnDeliveryPayment extends PaymentMethod {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     */
-	private String name;
 	private Float promisedAmount;
 	
 	public OnDeliveryPayment() {};
@@ -22,14 +21,6 @@ public class OnDeliveryPayment extends PaymentMethod {
 	public OnDeliveryPayment(String name, Float promisedAmount) {
 		this.setName(name);
 		this.setPromisedAmount(promisedAmount);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Float getPromisedAmount() {

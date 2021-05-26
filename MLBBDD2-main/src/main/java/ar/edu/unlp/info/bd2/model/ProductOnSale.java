@@ -25,8 +25,8 @@ public class ProductOnSale {
 	@OneToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-	@JoinColumn(name = "provider_id")
 	@OneToOne
+	@JoinColumn(name = "provider_id")
 	private Provider provider;
 	private Float price;
 	private Date initialDate;

@@ -16,7 +16,6 @@ public class CreditCardPayment extends PaymentMethod {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     */
-	private String name;
 	private String brand;
 	private Long number;
 	private Date expiry;
@@ -32,14 +31,6 @@ public class CreditCardPayment extends PaymentMethod {
 		this.setExpiry(expiry);
 		this.setCvv(cvv);
 		this.setOwner(owner);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getBrand() {

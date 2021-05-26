@@ -26,7 +26,7 @@ import ar.edu.unlp.info.bd2.model.Purchase;
 public class MLRepository extends CommonRepository{	
 	
 	public User findUserByEmail(String email) {
-		String hql = "from User where email = :email ";
+		String hql = "from User u where u.email = :email ";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("email", email);
 		List<User> users = query.getResultList();
@@ -95,10 +95,10 @@ public class MLRepository extends CommonRepository{
 	 * Si no hay ninguno devuelve null
 	 */
 	public List<ProductOnSale> findProductsOnSaleByProductAndProvider(Product product, Provider provider) {
-		String hql = "from ProductOnSale where product_id = :product_id and provider_id = :provider_id";
+		String hql = "from ProductOnSale where product_id = :product and provider_id = :provider";
 		Query query = getSession().createQuery(hql);
-		query.setParameter("product_id", product.getId());
-		query.setParameter("provider_id", provider.getId());
+		query.setParameter("product", product.getId());
+		query.setParameter("provider", provider.getId());
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return !productsOnSale.isEmpty() ? productsOnSale : null;
 	}
