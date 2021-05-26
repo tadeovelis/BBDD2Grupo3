@@ -26,124 +26,123 @@ public class MLRepositoryStatistics extends CommonRepository{
 	
 
 	public List<Purchase> getAllPurchasesMadeByUser(String username) {
-		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM User u INNER JOIN Purchase p ON (u.id = p.client) WHERE u.email = '"+ username +"'").list();
+		String hql = "from Purchase pur where pur.client.email = :username";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("username", username);
+		List<Purchase> purchases = query.getResultList();
+		return !purchases.isEmpty() ? purchases : null;
 	}
 	
 	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
-		String hql = "SELECT pur.client "
-				+"from Purchase pur "
-				+"where ("+amount+" < ((pur.quantity * pur.productOnSale.price)+pur.deliveryMethod.cost))"
-				+"order by pur.client.email asc";		
+		String hql = "select pur.client from Purchase pur "
+					+ "where ((pur.quantity * pur.productOnSale.price) + pur.deliveryMethod.cost) > :amount "
+					+ "order by pur.client.email asc";		
 		Query query = getSession().createQuery(hql);
-		return query.getResultList();		
+		query.setParameter("amount", amount);
+		List<User> users = query.getResultList();
+		return !users.isEmpty() ? users : null;	
 	}
-	
-	/* Para realizar testGetUserSpendingMoreThan que estaba mal
-	public List<User> getAllUsers() {
-		String hql = "SELECT u FROM User u";
-		Query query = getSession().createQuery(hql);
-		return query.getResultList();
-	}
-	*/
 	
 	public List<User> getUsersSpendingMoreThan(Float amount) {
-		String hql =
-				"SELECT pur.client "
-				+ "FROM Purchase pur INNER JOIN User u ON (pur.client = u.id) "
-				+ "GROUP BY pur.client "
-				+ "HAVING sum((pur.quantity * pur.productOnSale.price) + pur.deliveryMethod.cost) > "+amount;
+		String hql = "select pur.client from Purchase pur "
+					+ "group by pur.client "
+					+ "having "+amount+" < sum((pur.quantity * pur.productOnSale.price) + pur.deliveryMethod.cost)";
 		Query query = getSession().createQuery(hql);
+		/*
+		 * Con parámetro no funcionaba, porque la sum() era un Double y el amount un Float,
+		 * y daba error de cast
+		 * 
+		 * query.setParameter("amount", amount);
+		 */
 		List<User> users = query.getResultList();
 		return !users.isEmpty() ? users : null;
 	}
 	
 	public List<Product> getTop3MoreExpensiveProducts() {
-        return this.sessionFactory.getCurrentSession().createQuery("SELECT prod "
-        		+ "FROM Product AS prod INNER JOIN ProductOnSale AS pr ON(prod.id = pr.product) ORDER BY pr.price desc").setMaxResults(3).list();
+        String hql = "select pos.product from ProductOnSale pos "
+        			+ "group by pos.product "
+        			+ "order by max(pos.price) desc";
+        Query query = getSession().createQuery(hql);
+        query.setMaxResults(3);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products : null;
     }
 
-	public List <Product> getProductForCategory (Category category){
-		Long cat = category.getId();
-		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Product AS p INNER JOIN Category AS c ON (p.category = c.id) WHERE c.id = '" + cat + "'").list();
+	public List <Product> getProductForCategory (Category category) {
+		String hql = "from Product p where p.category = :category";
+	    Query query = getSession().createQuery(hql);
+	    query.setParameter("category", category);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products : null;
 	}
 	
 	public List <Purchase> getPurchasesForProvider(Long cuit){
-		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Purchase AS p INNER JOIN ProductOnSale AS pro ON (p.productOnSale = pro.id) "
-				+ "INNER JOIN Provider AS pr ON (pro.provider = pr.id) WHERE pr.cuit = '" + cuit + "'").list();
+		String hql = "from Purchase pur where pur.productOnSale.provider.cuit = :cuit";
+	    Query query = getSession().createQuery(hql);
+	    query.setParameter("cuit", cuit);
+		List<Purchase> purchases = query.getResultList();
+		return !purchases.isEmpty() ? purchases : null;
 	}
 	
-	public  List <Purchase> getPurchasesInPeriod(Date startDate, Date endDate){
-		MLRepository paraConvertirFechas = new MLRepository();
-		String date_start = paraConvertirFechas.convertDay(startDate);
-		String date_end = paraConvertirFechas.convertDay(endDate);
-		return this.sessionFactory.getCurrentSession().createQuery("SELECT p FROM Purchase AS p WHERE p.dateOfPurchase BETWEEN '"+ date_start +"' AND '"+ date_end +"'").list(); 
+	public List<Purchase> getPurchasesInPeriod(Date startDate, Date endDate) {
+		String hql = "from Purchase pur where pur.dateOfPurchase between :id and :ed";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("id", startDate);
+		query.setParameter("ed", endDate);
+		List<Purchase> purchases = query.getResultList();
+		return !purchases.isEmpty() ? purchases : null;
 	}
 	
 	public List<Product> getProductsOnePrice() {
-		String hql = 
-				"SELECT p FROM Product p WHERE EXISTS ("
-				+ "SELECT pro.product, count(*) "
-				+ "FROM ProductOnSale pro INNER JOIN Product p2 ON (pro.product = p2.id) "
-				+ "WHERE pro.product = p.id "
-				+ "GROUP BY pro.product "
-				+ "HAVING count(*) = 1"
-			+ ")";
+		String hql = "select pos.product from ProductOnSale pos "
+					+ "group by pos.product "
+					+ "having count(*) = 1";
 		Query query = getSession().createQuery(hql);
 		List<Product> products = query.getResultList();
 		return !products.isEmpty() ? products : null;
 	}
 
 	public Provider getProviderLessExpensiveProduct() {
-		String hql = 
-				"SELECT p FROM Provider p INNER JOIN ProductOnSale pos ON "
-				+ "(p.id = pos.provider) "
-				+ "WHERE pos.finalDate is null and "
-				+ "pos.price = ("
-					+ "SELECT min(price) "
-					+ "FROM ProductOnSale"
-				+ ")";
+		String hql = "select pos.provider from ProductOnSale pos "
+					+ "where pos.finalDate is null "
+					+ "order by pos.price";
 		Query query = getSession().createQuery(hql);
+		query.setMaxResults(1);
 		List<Provider> providers = query.getResultList();
 		return !providers.isEmpty() ? providers.get(query.getFirstResult()) : null;
 	}
 
 	public List<Provider> getProvidersDoNotSellOn(Date day) {
-		String dayConverted = this.convertDay(day);
-		String hql = 
-				"SELECT pro FROM Provider pro WHERE pro.id NOT IN ("
-				+ "SELECT pro2 FROM Provider pro2 INNER JOIN ProductOnSale pos ON (pro2.id = pos.provider) "
-				+ "INNER JOIN Purchase pu ON (pu.productOnSale = pos.id) "
-				+ "WHERE pu.dateOfPurchase = '" + dayConverted + "')";
+		String hql = "from Provider pro where pro.id not in ("
+						+ "select pur.productOnSale.provider.id from Purchase pur "
+						+ "where pur.dateOfPurchase = :day)";
 		Query query = getSession().createQuery(hql);
+		query.setParameter("day", day);
 		List<Provider> providers = query.getResultList();
 		return !providers.isEmpty() ? providers : null;
 	}
 
 	public List<ProductOnSale> getSoldProductsOn(Date day) {
-		String dayConverted = this.convertDay(day);
-		String hql = 
-				"SELECT distinct p FROM ProductOnSale p INNER JOIN Purchase pu ON (p.id = pu.productOnSale) "
-				+ "WHERE pu.dateOfPurchase = '" + dayConverted + "'";
+		String hql = "select distinct pur.productOnSale from Purchase pur "
+					+ "where pur.dateOfPurchase = :day ";
 		Query query = getSession().createQuery(hql);
+		query.setParameter("day", day);
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return !productsOnSale.isEmpty() ? productsOnSale : null;
 	}
-
+	
 	public List<Product> getProductsNotSold() {
-		String hql = 
-				"SELECT p FROM Product p WHERE not exists ("
-				+ "SELECT 1 FROM ProductOnSale pos INNER JOIN Purchase pu ON (pos.id = pu.productOnSale) "
-				+ "WHERE pos.product = p.id)";
+		String hql = "from Product p where p not in ("
+						+ "select distinct pur.productOnSale.product from Purchase pur)";
 		Query query = getSession().createQuery(hql);
 		List<Product> products = query.getResultList();
 		return !products.isEmpty() ? products : null;
 	}
 
 	public DeliveryMethod getMostUsedDeliveryMethod() {
-		String hql = 
-				"SELECT dm FROM DeliveryMethod dm INNER JOIN Purchase pu ON (dm.id = pu.deliveryMethod) "
-				+ "GROUP BY pu.deliveryMethod "
-				+ "ORDER BY count(*) DESC";
+		String hql = "select pur.deliveryMethod from Purchase pur "
+					+ "group by pur.deliveryMethod "
+					+ "order by count(*) desc";
 		Query query = getSession().createQuery(hql);
 		// Para que me traiga el primero solamente
 		query.setMaxResults(1);
@@ -152,8 +151,7 @@ public class MLRepositoryStatistics extends CommonRepository{
 	}
 
 	public Product getHeaviestProduct() {
-		String hql = 
-				"SELECT p FROM Product p ORDER BY p.weight DESC";
+		String hql = "from Product order by weight desc";
 		Query query = getSession().createQuery(hql);
 		// Para que me traiga el primero solamente
 		query.setMaxResults(1);
@@ -162,39 +160,45 @@ public class MLRepositoryStatistics extends CommonRepository{
 	}
 
 	public Category getCategoryWithLessProducts() {
-		String hql = 
-				"SELECT c FROM Category c INNER JOIN Product p ON (c.id = p.category) "
-				+ "GROUP BY c.id "
-				+ "ORDER BY count(*) ASC";
+		String hql = "select p.category from Product p "
+					+ "group by p.category "
+					+ "order by count(*)";
 		Query query = getSession().createQuery(hql);
 		// Para que me traiga el primero solamente
 		query.setMaxResults(1);
 		List<Category> categories = query.getResultList();
 		return !categories.isEmpty() ? categories.get(query.getFirstResult()) : null;
 	}
-	
+
 	public List<User> getTopNUsersMorePurchase(int n) {
-		String hql = "SELECT u "
-				+ "FROM Purchase pur inner join User u on u.id =pur.client "
-				+ "group by pur.client "
-				+ "order by count(pur.client) desc ";
-		
+		String hql = "select pur.client from Purchase pur "
+					+ "group by pur.client "
+					+ "order by count(*) desc";
 		Query query = getSession().createQuery(hql);
 		query.setMaxResults(n);
 		return query.getResultList();
 	}
 	
 	public Product getBestSellingProduct() {
-		String hql = 
-				"SELECT p FROM Product p INNER JOIN ProductOnSale pos ON (p.id = pos.product) "
-				+ "INNER JOIN Purchase pu ON (pos.id = pu.productOnSale) "
-				+ "GROUP BY p.id "
-				+ "ORDER BY count(*) DESC";
+		String hql = "select p from Purchase pur join pur.productOnSale.product as p "
+					+ "group by p "
+					+ "order by count(*) desc";
 		Query query = getSession().createQuery(hql);
 		// Para que me traiga el primero solamente
 		query.setMaxResults(1);
 		List<Product> products = query.getResultList();
 		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
+	}
+	
+	public List<Provider> getTopNProvidersInPurchases(int n) {
+		String hql = "select pro from Purchase pur join pur.productOnSale.provider as pro "
+					+ "group by pro "
+					+ "order by count(*) desc";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga solo los n primeros
+		query.setMaxResults(n);
+		List<Provider> providers = query.getResultList();
+		return !providers.isEmpty() ? providers : null;
 	}
 	
 	// Para realizar el testGetMoreChangeOnDeliveryMethod
@@ -235,18 +239,5 @@ public class MLRepositoryStatistics extends CommonRepository{
 		Query query = getSession().createQuery(hql);
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return productsOnSale;
-	}
-
-	public List<Provider> getTopNProvidersInPurchases(int n) {
-		String hql = 
-				"SELECT pro FROM Provider pro INNER JOIN ProductOnSale pos ON (pro.id = pos.provider) "
-				+ "INNER JOIN Purchase pu ON (pu.productOnSale = pos.id) "
-				+ "GROUP BY pro.id "
-				+ "ORDER BY count(*) DESC";
-		Query query = getSession().createQuery(hql);
-		// Para que me traiga solo los n primeros
-		query.setMaxResults(n);
-		List<Provider> providers = query.getResultList();
-		return !providers.isEmpty() ? providers : null;
 	}
 }
