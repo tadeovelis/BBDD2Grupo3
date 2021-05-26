@@ -264,7 +264,7 @@ public class MLServiceImpl implements MLService {
 			return null;
 	}
 	
-
+	/* Esto estaba mal
 	@Override
 	public List<User> getUsersSpendingMoreThan(Float amount) {
 		List<User> users = this.repositoryStatistics.getAllUsers();
@@ -276,6 +276,10 @@ public class MLServiceImpl implements MLService {
 			if (total > amount) resultUsers.add(u);
 		}
 		return resultUsers;
+	}
+	*/
+	public List<User> getUsersSpendingMoreThan(Float amount) {
+		return this.repositoryStatistics.getUsersSpendingMoreThan(amount);
 	}
 
 

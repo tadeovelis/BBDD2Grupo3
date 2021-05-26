@@ -38,11 +38,23 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return query.getResultList();		
 	}
 	
-	// Para realizar testGetUserSpendingMoreThan
+	/* Para realizar testGetUserSpendingMoreThan que estaba mal
 	public List<User> getAllUsers() {
 		String hql = "SELECT u FROM User u";
 		Query query = getSession().createQuery(hql);
 		return query.getResultList();
+	}
+	*/
+	
+	public List<User> getUsersSpendingMoreThan(Float amount) {
+		String hql =
+				"SELECT pur.client "
+				+ "FROM Purchase pur INNER JOIN User u ON (pur.client = u.id) "
+				+ "GROUP BY pur.client "
+				+ "HAVING sum((pur.quantity * pur.productOnSale.price) + pur.deliveryMethod.cost) > "+amount;
+		Query query = getSession().createQuery(hql);
+		List<User> users = query.getResultList();
+		return !users.isEmpty() ? users : null;
 	}
 	
 	public List<Product> getTop3MoreExpensiveProducts() {
