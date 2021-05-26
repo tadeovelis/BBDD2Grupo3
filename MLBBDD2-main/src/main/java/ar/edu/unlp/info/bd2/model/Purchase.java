@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,17 +17,17 @@ public class Purchase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "productOnSale_id")
 	private ProductOnSale productOnSale;
 	private Integer quantity;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User client;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "deliveryMethod_id")
 	private DeliveryMethod deliveryMethod;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "paymentMethod_id")
 	private PaymentMethod paymentMethod;
 	private String address;
