@@ -95,12 +95,13 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !providers.isEmpty() ? providers.get(query.getFirstResult()) : null;
 	}
 
-	public List<Provider> getProviderDoNotSellOn(Date day) {
+	public List<Provider> getProvidersDoNotSellOn(Date day) {
 		String dayConverted = this.convertDay(day);
 		String hql = 
-				"SELECT distinct p FROM Provider p INNER JOIN ProductOnSale pos ON (p.id = pos.provider) "
+				"SELECT pro FROM Provider pro WHERE pro.id NOT IN ("
+				+ "SELECT pro2 FROM Provider pro2 INNER JOIN ProductOnSale pos ON (pro2.id = pos.provider) "
 				+ "INNER JOIN Purchase pu ON (pu.productOnSale = pos.id) "
-				+ "WHERE pu.dateOfPurchase != '" + dayConverted + "'";
+				+ "WHERE pu.dateOfPurchase = '" + dayConverted + "')";
 		Query query = getSession().createQuery(hql);
 		List<Provider> providers = query.getResultList();
 		return !providers.isEmpty() ? providers : null;

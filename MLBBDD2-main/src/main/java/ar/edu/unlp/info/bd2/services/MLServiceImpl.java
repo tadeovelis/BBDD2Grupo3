@@ -355,7 +355,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public List<Provider> getProvidersDoNotSellOn(Date day) {
-		return this.repositoryStatistics.getProviderDoNotSellOn(day);
+		return this.repositoryStatistics.getProvidersDoNotSellOn(day);
 	}
 
 
