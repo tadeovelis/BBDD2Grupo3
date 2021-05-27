@@ -17,6 +17,7 @@ public class Product {
     private Long id;
 	@Column(unique=true)
 	private String name;
+	@Column(nullable=false)
 	private Float weight;
 	@ManyToOne
 	private Category category;

@@ -17,11 +17,15 @@ public class CreditCardPayment extends PaymentMethod {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     */
+	@Column(nullable=false)
 	private String brand;
 	@Column(unique=true)
 	private Long number;
+	@Column(nullable=false)
 	private Date expiry;
+	@Column(nullable=false)
 	private Integer cvv;
+	@Column(nullable=false)
 	private String owner;
 	
 	public CreditCardPayment() {}

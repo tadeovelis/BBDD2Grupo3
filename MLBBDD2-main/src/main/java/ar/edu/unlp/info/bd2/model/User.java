@@ -14,6 +14,7 @@ public class User {
     private String fullname;
     @Column(unique=true)
     private String email;
+    @Column(nullable=false)
     private String password;
     private Date dayOfBirth;
 

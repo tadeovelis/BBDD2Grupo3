@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +34,7 @@ public class Purchase {
 	private String address;
 	private Float coordX;
 	private Float coordY;
+	@Column(nullable=false)
 	private Date dateOfPurchase;
 	
 	public Purchase() {};
