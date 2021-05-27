@@ -120,21 +120,20 @@ public class MLServiceImpl implements MLService {
 	@Transactional
 	public ProductOnSale createProductOnSale(Product product, Provider provider, Float price, Date initialDate)
 			throws MLException {
+		
 		// Chequear si el producto ya tiene un precio para ese proveedor
-		Optional<List<ProductOnSale>> pos = this.getProductsOnSaleByProductAndProviderOrderByInitialDateDesc(product, provider);
+		ProductOnSale pos = this.getLastProductOnSaleForProductAndProvider(product, provider);
 		// Si ya tiene tengo que fijarme que la initialDate sea posterior a la initialDate actual
 		// Después, si la initialDate está bien, le actualizo la finalDate de null a initialDate - 1 día
-		if (pos.isPresent()) {
-			// Me agarro el precio más nuevo
-			ProductOnSale p = pos.get().get(0);
+		if (pos != null) {
 			// Comparo las dates
-			if (initialDate.after(p.getInitialDate()) || initialDate.equals(p.getInitialDate())) { 
+			if (initialDate.after(pos.getInitialDate()) || initialDate.equals(pos.getInitialDate())) { 
 				// Le pongo como finalDate la initialDate - 1 día
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(initialDate);
 				cal.add(Calendar.DATE, -1);
 				Date newFinalDate = cal.getTime();
-				p.setFinalDate(newFinalDate);
+				pos.setFinalDate(newFinalDate);
 			}
 			// Si la initialDate es anterior a la initialDate 
 			// del ProductOnSale entonces lanzo la excepción
@@ -154,8 +153,8 @@ public class MLServiceImpl implements MLService {
 		return productOnSale;
 	}
 	
-	public Optional<List<ProductOnSale>> getProductsOnSaleByProductAndProviderOrderByInitialDateDesc(Product product, Provider provider) {
-		return Optional.ofNullable(this.repository.findProductsOnSaleByProductAndProviderOrderByInitialDateDesc(product, provider));
+	public ProductOnSale getLastProductOnSaleForProductAndProvider(Product product, Provider provider) {
+		return this.repository.getLastProductOnSaleForProductAndProvider(product, provider);
 	}
 
 	@Override
@@ -173,9 +172,6 @@ public class MLServiceImpl implements MLService {
 		else {
 			throw new MLException("Método de delivery no válido");
 		} 
-		
-		
-		
 	}
 
 	@Override

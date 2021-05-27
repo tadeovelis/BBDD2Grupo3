@@ -89,25 +89,21 @@ public class MLRepository extends CommonRepository{
 		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments.get(query.getFirstResult()) : null;
 	}
 
-	/*
-	 * Te devuelve una lista con todos los ProductsOnSale que matcheen
-	 * con product y provider ordenados por initialDate de forma descendente
-	 * Si no hay ninguno devuelve null
-	 */
-	public List<ProductOnSale> findProductsOnSaleByProductAndProviderOrderByInitialDateDesc(Product product, Provider provider) {
-		String hql = "from ProductOnSale where product_id = :product and provider_id = :provider "
-				+ "order by initialDate desc";
-		Query query = getSession().createQuery(hql);
-		query.setParameter("product", product.getId());
-		query.setParameter("provider", provider.getId());
-		List<ProductOnSale> productsOnSale = query.getResultList();
-		return !productsOnSale.isEmpty() ? productsOnSale : null;
-	}
-
 	public ProductOnSale getProductOnSaleById(Long id) {
 		String hql = "from ProductOnSale where id = :id ";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("id", id);
+		List<ProductOnSale> productsOnSale = query.getResultList();
+		return !productsOnSale.isEmpty() ? productsOnSale.get(query.getFirstResult()) : null;
+	}
+
+	public ProductOnSale getLastProductOnSaleForProductAndProvider(Product product, Provider provider) {
+		String hql = "from ProductOnSale pos "
+					+ "where pos.product = :product and pos.provider = :provider "
+					+ "and pos.finalDate is null";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("product", product);
+		query.setParameter("provider", provider);
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return !productsOnSale.isEmpty() ? productsOnSale.get(query.getFirstResult()) : null;
 	}
