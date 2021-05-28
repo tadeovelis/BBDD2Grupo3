@@ -334,44 +334,14 @@ public class MLServiceImpl implements MLService {
 		return this.repositoryStatistics.getCategoryWithLessProducts();
 	}
 	
-	
-	
-	
 	@Override
 	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
-		List<Product> products = this.getAllProducts();
-		List<Product> resultProducts = new ArrayList<Product>();
-		for (Product p : products) {
-			if (this.differenceInProductPriceIsMoreThan20Percent(p.getId())) {
-				resultProducts.add(p);
-			}
-		}
-		return resultProducts;
+		return this.repositoryStatistics.getProductWithMoreThan20percentDiferenceInPrince();
 	}
 
-	// Devuelve todos los productos
-	public List<Product> getAllProducts() {
-		return this.repositoryStatistics.getAllProducts();
-	}
 	
-	// Dice si la diferencia de precio entre el más bajo y el mayor para un producto es mayor al 20 porciento
-	// y tienen que ser de distinto proveedor
-	private boolean differenceInProductPriceIsMoreThan20Percent(Long id) {
-		List<ProductOnSale> productsOnSale = this.repositoryStatistics.getProductOnSaleOrderedByPricesForProduct(id);
-		if (!productsOnSale.isEmpty()) {
-			ProductOnSale posHighestPrice = productsOnSale.get(productsOnSale.size()-1);
-			ProductOnSale posLowestPrice = productsOnSale.get(0);
-			// Tienen que ser de distinto proveedor
-			if (posHighestPrice.getProvider() != posLowestPrice.getProvider()) {
-				Float lowestPrice = posLowestPrice.getPrice();
-				Float dif = posHighestPrice.getPrice() - lowestPrice;
-				// Chequeo el porcentaje
-				return (dif > (lowestPrice * 0.2));
-			}
-		}
-		return false;
-	}
 
+	
 	@Override
 	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
 		// Me traigo todos los onDeliveryPayments
@@ -405,7 +375,5 @@ public class MLServiceImpl implements MLService {
 	public Purchase getPurchaseOfOnDeliveryPayment(Long odp_id) {
 		return this.repositoryStatistics.getPurchaseOfOnDeliveryPayment(odp_id);
 	}
-
-
 	
 }

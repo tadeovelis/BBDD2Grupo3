@@ -201,6 +201,17 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !providers.isEmpty() ? providers : null;
 	}
 	
+	public List<Product> getProductWithMoreThan20percentDiferenceInPrince() {
+		String hql = "select pos.product from ProductOnSale pos "
+					+ "where pos.finalDate is null "
+					+ "group by pos.product "
+					+ "having ( (max(pos.price) - min(pos.price)) > (min(pos.price) * 0.2) )";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga el primero solamente
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products : null;
+	}
+	
 	
 	
 	
@@ -223,35 +234,4 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments : null;
 	}
 	
-	
-	
-	public Product getProductWithMoreThan20percentDiferenceInPrince() {
-		String hql = "";
-		Query query = getSession().createQuery(hql);
-		// Para que me traiga el primero solamente
-		List<Product> products = query.getResultList();
-		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
-	}
-	
-	
-	
-	// Para realizar el testGetProductWithMoreThan20percentDiferenceInPrice
-	public List<Product> getAllProducts() {
-		String hql = 
-				"SELECT p FROM Product p";
-		Query query = getSession().createQuery(hql);
-		List<Product> products = query.getResultList();
-		return !products.isEmpty() ? products : null;
-	}
-	
-	// Para realizar el testGetProductWithMoreThan20percentDiferenceInPrice
-	public List<ProductOnSale> getProductOnSaleOrderedByPricesForProduct(Long id) {
-		String hql = 
-				"SELECT pos FROM ProductOnSale pos "
-				+ "WHERE pos.product = " + id +" "
-				+ "ORDER BY pos.price";
-		Query query = getSession().createQuery(hql);
-		List<ProductOnSale> productsOnSale = query.getResultList();
-		return productsOnSale;
-	}
 }
