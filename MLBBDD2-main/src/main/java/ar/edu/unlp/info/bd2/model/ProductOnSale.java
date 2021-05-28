@@ -22,10 +22,10 @@ public class ProductOnSale {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	@ManyToOne
-	@JoinColumn(name = "product_id")
+	@JoinColumn(name = "product_id", nullable=false)
 	private Product product;
 	@ManyToOne
-	@JoinColumn(name = "provider_id")
+	@JoinColumn(name = "provider_id", nullable=false)
 	private Provider provider;
 	@Column(nullable=false)
 	private Float price;

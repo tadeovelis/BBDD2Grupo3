@@ -232,11 +232,6 @@ public class MLServiceImpl implements MLService {
 	public List<Purchase> getAllPurchasesMadeByUser(String username){
 		return this.repositoryStatistics.getAllPurchasesMadeByUser(username);
 	}
-	/*
-	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
-		return this.repository.getUsersSpendingMoreThanInPurchase(amount);
-	}
-	*/
 	
 	public List <Product> getProductForCategory (Category category){
 		return this.repositoryStatistics.getProductForCategory(category);
@@ -260,20 +255,7 @@ public class MLServiceImpl implements MLService {
 			return null;
 	}
 	
-	/* Esto estaba mal
 	@Override
-	public List<User> getUsersSpendingMoreThan(Float amount) {
-		List<User> users = this.repositoryStatistics.getAllUsers();
-		List<User> resultUsers = new ArrayList<User>();
-		for (User u : users) {
-			List<Purchase> purchases = this.repositoryStatistics.getAllPurchasesMadeByUser(u.getEmail());
-			Float total = 0F;
-			for (Purchase p : purchases) total += p.getAmount();
-			if (total > amount) resultUsers.add(u);
-		}
-		return resultUsers;
-	}
-	*/
 	public List<User> getUsersSpendingMoreThan(Float amount) {
 		return this.repositoryStatistics.getUsersSpendingMoreThan(amount);
 	}
@@ -312,6 +294,50 @@ public class MLServiceImpl implements MLService {
 
 
 	@Override
+	public Provider getProviderLessExpensiveProduct() {
+		return this.repositoryStatistics.getProviderLessExpensiveProduct();
+	}
+
+
+	@Override
+	public List<Provider> getProvidersDoNotSellOn(Date day) {
+		return this.repositoryStatistics.getProvidersDoNotSellOn(day);
+	}
+
+
+	@Override
+	public List<ProductOnSale> getSoldProductsOn(Date day) {
+		return this.repositoryStatistics.getSoldProductsOn(day);
+	}
+
+
+	@Override
+	public List<Product> getProductsNotSold() {
+		return this.repositoryStatistics.getProductsNotSold();
+	}
+
+
+	@Override
+	public DeliveryMethod getMostUsedDeliveryMethod() {
+		return this.repositoryStatistics.getMostUsedDeliveryMethod();
+	}
+
+	
+	@Override
+	public Product getHeaviestProduct() {
+		return this.repositoryStatistics.getHeaviestProduct();
+	}
+
+
+	@Override
+	public Category getCategoryWithLessProducts() {
+		return this.repositoryStatistics.getCategoryWithLessProducts();
+	}
+	
+	
+	
+	
+	@Override
 	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
 		List<Product> products = this.getAllProducts();
 		List<Product> resultProducts = new ArrayList<Product>();
@@ -345,37 +371,6 @@ public class MLServiceImpl implements MLService {
 		}
 		return false;
 	}
-
-
-	@Override
-	public Provider getProviderLessExpensiveProduct() {
-		return this.repositoryStatistics.getProviderLessExpensiveProduct();
-	}
-
-
-	@Override
-	public List<Provider> getProvidersDoNotSellOn(Date day) {
-		return this.repositoryStatistics.getProvidersDoNotSellOn(day);
-	}
-
-
-	@Override
-	public List<ProductOnSale> getSoldProductsOn(Date day) {
-		return this.repositoryStatistics.getSoldProductsOn(day);
-	}
-
-
-	@Override
-	public List<Product> getProductsNotSold() {
-		return this.repositoryStatistics.getProductsNotSold();
-	}
-
-
-	@Override
-	public DeliveryMethod getMostUsedDeliveryMethod() {
-		return this.repositoryStatistics.getMostUsedDeliveryMethod();
-	}
-
 
 	@Override
 	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
@@ -412,14 +407,5 @@ public class MLServiceImpl implements MLService {
 	}
 
 
-	@Override
-	public Product getHeaviestProduct() {
-		return this.repositoryStatistics.getHeaviestProduct();
-	}
-
-
-	@Override
-	public Category getCategoryWithLessProducts() {
-		return this.repositoryStatistics.getCategoryWithLessProducts();
-	}
+	
 }

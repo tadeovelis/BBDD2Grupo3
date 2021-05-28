@@ -9,18 +9,22 @@ import javax.persistence.Inheritance;
 import javax.persistence.Table;
 import javax.persistence.InheritanceType;
 
-@Entity
+
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity
 @Table(name = "PaymentMethod")
 public class PaymentMethod {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue
     private Long id;
 	@Column(nullable=false)
 	private String name;
 	
-	
 	public PaymentMethod() {};
+	
+	public PaymentMethod(String name) {
+		this.setName(name);
+	};
 	
 
 	public Long getId() {

@@ -12,14 +12,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="CreditCardPayment")
 public class CreditCardPayment extends PaymentMethod {
-	/*
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    */
 	@Column(nullable=false)
 	private String brand;
-	@Column(unique=true)
+	@Column(unique=true, nullable=false)
 	private Long number;
 	@Column(nullable=false)
 	private Date expiry;
@@ -31,7 +26,7 @@ public class CreditCardPayment extends PaymentMethod {
 	public CreditCardPayment() {}
 
 	public CreditCardPayment(String name, String brand, Long number, Date expiry, Integer cvv, String owner) {
-		this.setName(name);
+		super(name);
 		this.setBrand(brand);
 		this.setNumber(number);
 		this.setExpiry(expiry);

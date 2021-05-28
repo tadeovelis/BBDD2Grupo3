@@ -201,6 +201,9 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !providers.isEmpty() ? providers : null;
 	}
 	
+	
+	
+	
 	// Para realizar el testGetMoreChangeOnDeliveryMethod
 	public Purchase getPurchaseOfOnDeliveryPayment(Long odp_id) {
 		String hql = 
@@ -219,6 +222,17 @@ public class MLRepositoryStatistics extends CommonRepository{
 		List<OnDeliveryPayment> onDeliveryPayments = query.getResultList();
 		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments : null;
 	}
+	
+	
+	
+	public Product getProductWithMoreThan20percentDiferenceInPrince() {
+		String hql = "";
+		Query query = getSession().createQuery(hql);
+		// Para que me traiga el primero solamente
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
+	}
+	
 	
 	
 	// Para realizar el testGetProductWithMoreThan20percentDiferenceInPrice

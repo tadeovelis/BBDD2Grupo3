@@ -19,17 +19,17 @@ public class Purchase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	@ManyToOne
-	@JoinColumn(name = "productOnSale_id")
+	@JoinColumn(name = "productOnSale_id", nullable=false)
 	private ProductOnSale productOnSale;
 	private Integer quantity;
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", nullable=false)
 	private User client;
 	@ManyToOne
-	@JoinColumn(name = "deliveryMethod_id")
+	@JoinColumn(name = "deliveryMethod_id", nullable=false)
 	private DeliveryMethod deliveryMethod;
 	@ManyToOne
-	@JoinColumn(name = "paymentMethod_id")
+	@JoinColumn(name = "paymentMethod_id", nullable=false)
 	private PaymentMethod paymentMethod;
 	private String address;
 	private Float coordX;

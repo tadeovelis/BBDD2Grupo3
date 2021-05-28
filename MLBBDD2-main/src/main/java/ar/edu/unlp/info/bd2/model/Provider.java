@@ -15,7 +15,7 @@ public class Provider {
     private Long id;
 	@Column(nullable=false)
 	private String name;
-	@Column(unique=true)
+	@Column(unique=true, nullable=false)
 	private Long cuit;
 	
 	public Provider() {};

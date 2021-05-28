@@ -10,18 +10,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="OnDeliveryPayment")
 public class OnDeliveryPayment extends PaymentMethod {
-	/*
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    */
 	@Column(nullable=false)
 	private Float promisedAmount;
 	
 	public OnDeliveryPayment() {};
 	
 	public OnDeliveryPayment(String name, Float promisedAmount) {
-		this.setName(name);
+		super(name);
 		this.setPromisedAmount(promisedAmount);
 	}
 
