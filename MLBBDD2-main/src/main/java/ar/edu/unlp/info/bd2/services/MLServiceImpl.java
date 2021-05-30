@@ -99,7 +99,12 @@ public class MLServiceImpl implements MLService {
 	public CreditCardPayment createCreditCardPayment(String name, String brand, Long number, Date expiry, Integer cvv,
 			String owner) throws MLException {
 		CreditCardPayment creditCardPayment = new CreditCardPayment(name, brand, number, expiry, cvv, owner);
-		repository.save(creditCardPayment);
+		try {
+			repository.save(creditCardPayment);
+		}
+		catch(ConstraintViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
 		return creditCardPayment;
 	}
 
@@ -115,21 +120,20 @@ public class MLServiceImpl implements MLService {
 	@Transactional
 	public ProductOnSale createProductOnSale(Product product, Provider provider, Float price, Date initialDate)
 			throws MLException {
+		
 		// Chequear si el producto ya tiene un precio para ese proveedor
-		Optional<List<ProductOnSale>> pos = this.getProductsOnSaleByProductAndProvider(product, provider);
+		ProductOnSale pos = this.getLastProductOnSaleForProductAndProvider(product, provider);
 		// Si ya tiene tengo que fijarme que la initialDate sea posterior a la initialDate actual
 		// Después, si la initialDate está bien, le actualizo la finalDate de null a initialDate - 1 día
-		if (pos.isPresent()) {
-			// Me agarro el precio más nuevo
-			ProductOnSale p = pos.get().get(pos.get().size()-1);
+		if (pos != null) {
 			// Comparo las dates
-			if (initialDate.after(p.getInitialDate()) || initialDate.equals(p.getInitialDate())) { 
+			if (initialDate.after(pos.getInitialDate()) || initialDate.equals(pos.getInitialDate())) { 
 				// Le pongo como finalDate la initialDate - 1 día
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(initialDate);
 				cal.add(Calendar.DATE, -1);
 				Date newFinalDate = cal.getTime();
-				p.setFinalDate(newFinalDate);
+				pos.setFinalDate(newFinalDate);
 			}
 			// Si la initialDate es anterior a la initialDate 
 			// del ProductOnSale entonces lanzo la excepción
@@ -149,8 +153,8 @@ public class MLServiceImpl implements MLService {
 		return productOnSale;
 	}
 	
-	public Optional<List<ProductOnSale>> getProductsOnSaleByProductAndProvider(Product product, Provider provider) {
-		return Optional.ofNullable(this.repository.findProductsOnSaleByProductAndProvider(product, provider));
+	public ProductOnSale getLastProductOnSaleForProductAndProvider(Product product, Provider provider) {
+		return this.repository.getLastProductOnSaleForProductAndProvider(product, provider);
 	}
 
 	@Override
@@ -168,9 +172,6 @@ public class MLServiceImpl implements MLService {
 		else {
 			throw new MLException("Método de delivery no válido");
 		} 
-		
-		
-		
 	}
 
 	@Override
@@ -231,11 +232,6 @@ public class MLServiceImpl implements MLService {
 	public List<Purchase> getAllPurchasesMadeByUser(String username){
 		return this.repositoryStatistics.getAllPurchasesMadeByUser(username);
 	}
-	/*
-	public List<User> getUsersSpendingMoreThanInPurchase(Float amount){
-		return this.repository.getUsersSpendingMoreThanInPurchase(amount);
-	}
-	*/
 	
 	public List <Product> getProductForCategory (Category category){
 		return this.repositoryStatistics.getProductForCategory(category);
@@ -259,18 +255,9 @@ public class MLServiceImpl implements MLService {
 			return null;
 	}
 	
-
 	@Override
 	public List<User> getUsersSpendingMoreThan(Float amount) {
-		List<User> users = this.repositoryStatistics.getAllUsers();
-		List<User> resultUsers = new ArrayList<User>();
-		for (User u : users) {
-			List<Purchase> purchases = this.repositoryStatistics.getAllPurchasesMadeByUser(u.getEmail());
-			Float total = 0F;
-			for (Purchase p : purchases) total += p.getAmount();
-			if (total > amount) resultUsers.add(u);
-		}
-		return resultUsers;
+		return this.repositoryStatistics.getUsersSpendingMoreThan(amount);
 	}
 
 
@@ -307,42 +294,6 @@ public class MLServiceImpl implements MLService {
 
 
 	@Override
-	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
-		List<Product> products = this.getAllProducts();
-		List<Product> resultProducts = new ArrayList<Product>();
-		for (Product p : products) {
-			if (this.differenceInProductPriceIsMoreThan20Percent(p.getId())) {
-				resultProducts.add(p);
-			}
-		}
-		return resultProducts;
-	}
-
-	// Devuelve todos los productos
-	public List<Product> getAllProducts() {
-		return this.repositoryStatistics.getAllProducts();
-	}
-	
-	// Dice si la diferencia de precio entre el más bajo y el mayor para un producto es mayor al 20 porciento
-	// y tienen que ser de distinto proveedor
-	private boolean differenceInProductPriceIsMoreThan20Percent(Long id) {
-		List<ProductOnSale> productsOnSale = this.repositoryStatistics.getProductOnSaleOrderedByPricesForProduct(id);
-		if (!productsOnSale.isEmpty()) {
-			ProductOnSale posHighestPrice = productsOnSale.get(productsOnSale.size()-1);
-			ProductOnSale posLowestPrice = productsOnSale.get(0);
-			// Tienen que ser de distinto proveedor
-			if (posHighestPrice.getProvider() != posLowestPrice.getProvider()) {
-				Float lowestPrice = posLowestPrice.getPrice();
-				Float dif = posHighestPrice.getPrice() - lowestPrice;
-				// Chequeo el porcentaje
-				return (dif > (lowestPrice * 0.2));
-			}
-		}
-		return false;
-	}
-
-
-	@Override
 	public Provider getProviderLessExpensiveProduct() {
 		return this.repositoryStatistics.getProviderLessExpensiveProduct();
 	}
@@ -350,7 +301,7 @@ public class MLServiceImpl implements MLService {
 
 	@Override
 	public List<Provider> getProvidersDoNotSellOn(Date day) {
-		return this.repositoryStatistics.getProviderDoNotSellOn(day);
+		return this.repositoryStatistics.getProvidersDoNotSellOn(day);
 	}
 
 
@@ -371,42 +322,7 @@ public class MLServiceImpl implements MLService {
 		return this.repositoryStatistics.getMostUsedDeliveryMethod();
 	}
 
-
-	@Override
-	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
-		// Me traigo todos los onDeliveryPayments
-		List<OnDeliveryPayment> odps = this.getAllOnDeliveryPayment();
-		
-		// Variables para el máximo
-		OnDeliveryPayment maxOdp = null;
-		Float maxChange = 0F;
 	
-		// Recorro la lista de odps
-		for (OnDeliveryPayment odp : odps) {
-			// Me traigo el purchase del odp
-			Purchase odpPu = this.getPurchaseOfOnDeliveryPayment(odp.getId());
-			// Calculo el vuelto
-			Float odpChange = odp.getPromisedAmount() - odpPu.getAmount();
-			
-			// Actualizo (de ser necesario) el máximo
-			if (odpChange > maxChange) {
-				maxChange = odpChange;
-				maxOdp = odp;
-			}
-		}
-		return maxOdp;
-	}
-	
-	// Devuelve todos los odps
-	public List<OnDeliveryPayment> getAllOnDeliveryPayment() {
-		return this.repositoryStatistics.getAllOnDeliveryPayment();
-	}
-	// Devuelve el purchase dado un onDeliveryPayment.ID
-	public Purchase getPurchaseOfOnDeliveryPayment(Long odp_id) {
-		return this.repositoryStatistics.getPurchaseOfOnDeliveryPayment(odp_id);
-	}
-
-
 	@Override
 	public Product getHeaviestProduct() {
 		return this.repositoryStatistics.getHeaviestProduct();
@@ -417,4 +333,16 @@ public class MLServiceImpl implements MLService {
 	public Category getCategoryWithLessProducts() {
 		return this.repositoryStatistics.getCategoryWithLessProducts();
 	}
+	
+	@Override
+	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
+		return this.repositoryStatistics.getProductWithMoreThan20percentDiferenceInPrince();
+	}
+
+	
+	@Override
+	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
+		return this.repositoryStatistics.getMoreChangeOnDeliveryMethod();
+	}
+	
 }

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
 public class MLStatisticsTestCase {
@@ -191,4 +191,5 @@ public class MLStatisticsTestCase {
     	Category category = this.service.getCategoryWithLessProducts();
     	assertEquals("Calderas", category.getName());
     }
+    
 }

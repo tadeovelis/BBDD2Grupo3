@@ -13,8 +13,9 @@ public class Provider {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@Column(unique=true)
+	@Column(nullable=false)
 	private String name;
+	@Column(unique=true, nullable=false)
 	private Long cuit;
 	
 	public Provider() {};

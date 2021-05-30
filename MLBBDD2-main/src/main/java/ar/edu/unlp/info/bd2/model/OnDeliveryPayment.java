@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,27 +10,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name="OnDeliveryPayment")
 public class OnDeliveryPayment extends PaymentMethod {
-	/*
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    */
-	private String name;
+	@Column(nullable=false)
 	private Float promisedAmount;
 	
 	public OnDeliveryPayment() {};
 	
 	public OnDeliveryPayment(String name, Float promisedAmount) {
-		this.setName(name);
+		super(name);
 		this.setPromisedAmount(promisedAmount);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Float getPromisedAmount() {

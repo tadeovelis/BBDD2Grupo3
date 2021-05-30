@@ -2,11 +2,13 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,22 +18,23 @@ public class Purchase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@OneToOne
-	@JoinColumn(name = "productOnSale_id")
+	@ManyToOne
+	@JoinColumn(name = "productOnSale_id", nullable=false)
 	private ProductOnSale productOnSale;
 	private Integer quantity;
-	@OneToOne
-	@JoinColumn(name = "user_id")
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable=false)
 	private User client;
-	@OneToOne
-	@JoinColumn(name = "deliveryMethod_id")
+	@ManyToOne
+	@JoinColumn(name = "deliveryMethod_id", nullable=false)
 	private DeliveryMethod deliveryMethod;
-	@OneToOne
-	@JoinColumn(name = "paymentMethod_id")
+	@ManyToOne
+	@JoinColumn(name = "paymentMethod_id", nullable=false)
 	private PaymentMethod paymentMethod;
 	private String address;
 	private Float coordX;
 	private Float coordY;
+	@Column(nullable=false)
 	private Date dateOfPurchase;
 	
 	public Purchase() {};

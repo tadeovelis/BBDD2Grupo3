@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,35 +12,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name="CreditCardPayment")
 public class CreditCardPayment extends PaymentMethod {
-	/*
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    */
-	private String name;
+	@Column(nullable=false)
 	private String brand;
+	@Column(unique=true, nullable=false)
 	private Long number;
+	@Column(nullable=false)
 	private Date expiry;
+	@Column(nullable=false)
 	private Integer cvv;
+	@Column(nullable=false)
 	private String owner;
 	
 	public CreditCardPayment() {}
 
 	public CreditCardPayment(String name, String brand, Long number, Date expiry, Integer cvv, String owner) {
-		this.setName(name);
+		super(name);
 		this.setBrand(brand);
 		this.setNumber(number);
 		this.setExpiry(expiry);
 		this.setCvv(cvv);
 		this.setOwner(owner);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getBrand() {

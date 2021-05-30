@@ -26,7 +26,7 @@ import ar.edu.unlp.info.bd2.model.Purchase;
 public class MLRepository extends CommonRepository{	
 	
 	public User findUserByEmail(String email) {
-		String hql = "from User where email = :email ";
+		String hql = "from User u where u.email = :email ";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("email", email);
 		List<User> users = query.getResultList();
@@ -89,24 +89,21 @@ public class MLRepository extends CommonRepository{
 		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments.get(query.getFirstResult()) : null;
 	}
 
-	/*
-	 * Te devuelve una lista con todos los ProductsOnSale que matcheen
-	 * con product y provider
-	 * Si no hay ninguno devuelve null
-	 */
-	public List<ProductOnSale> findProductsOnSaleByProductAndProvider(Product product, Provider provider) {
-		String hql = "from ProductOnSale where product_id = :product_id and provider_id = :provider_id";
-		Query query = getSession().createQuery(hql);
-		query.setParameter("product_id", product.getId());
-		query.setParameter("provider_id", provider.getId());
-		List<ProductOnSale> productsOnSale = query.getResultList();
-		return !productsOnSale.isEmpty() ? productsOnSale : null;
-	}
-
 	public ProductOnSale getProductOnSaleById(Long id) {
 		String hql = "from ProductOnSale where id = :id ";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("id", id);
+		List<ProductOnSale> productsOnSale = query.getResultList();
+		return !productsOnSale.isEmpty() ? productsOnSale.get(query.getFirstResult()) : null;
+	}
+
+	public ProductOnSale getLastProductOnSaleForProductAndProvider(Product product, Provider provider) {
+		String hql = "from ProductOnSale pos "
+					+ "where pos.product = :product and pos.provider = :provider "
+					+ "and pos.finalDate is null";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("product", product);
+		query.setParameter("provider", provider);
 		List<ProductOnSale> productsOnSale = query.getResultList();
 		return !productsOnSale.isEmpty() ? productsOnSale.get(query.getFirstResult()) : null;
 	}

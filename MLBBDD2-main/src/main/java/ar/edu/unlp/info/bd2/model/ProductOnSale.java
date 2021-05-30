@@ -1,6 +1,5 @@
 package ar.edu.unlp.info.bd2.model;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,13 +21,15 @@ public class ProductOnSale {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@OneToOne
-	@JoinColumn(name = "product_id")
+	@ManyToOne
+	@JoinColumn(name = "product_id", nullable=false)
 	private Product product;
-	@JoinColumn(name = "provider_id")
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name = "provider_id", nullable=false)
 	private Provider provider;
+	@Column(nullable=false)
 	private Float price;
+	@Column(nullable=false)
 	private Date initialDate;
 	private Date finalDate;
 	
