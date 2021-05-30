@@ -113,8 +113,8 @@ public class MLRepositoryStatistics extends CommonRepository{
 	}
 
 	public List<Provider> getProvidersDoNotSellOn(Date day) {
-		String hql = "from Provider pro where pro.id not in ("
-						+ "select pur.productOnSale.provider.id from Purchase pur "
+		String hql = "from Provider pro where pro not in ("
+						+ "select pur.productOnSale.provider from Purchase pur "
 						+ "where pur.dateOfPurchase = :day)";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("day", day);
@@ -212,26 +212,14 @@ public class MLRepositoryStatistics extends CommonRepository{
 		return !products.isEmpty() ? products : null;
 	}
 	
-	
-	
-	
-	// Para realizar el testGetMoreChangeOnDeliveryMethod
-	public Purchase getPurchaseOfOnDeliveryPayment(Long odp_id) {
-		String hql = 
-				"SELECT pu FROM Purchase pu WHERE pu.paymentMethod = " + odp_id;
+	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
+		String hql = "select pur.paymentMethod from Purchase pur "
+					+ "order by (pur.paymentMethod.promisedAmount - ((pur.quantity * pur.productOnSale.price) + pur.deliveryMethod.cost)) desc ";
 		Query query = getSession().createQuery(hql);
 		// Para que me traiga el primero solamente
-		List<Purchase> purchases = query.getResultList();
-		return !purchases.isEmpty() ? purchases.get(query.getFirstResult()) : null;
-	}
-	
-	// Para realizar el testGetMoreChangeOnDeliveryMethod
-	public List<OnDeliveryPayment> getAllOnDeliveryPayment() {
-		String hql = 
-				"SELECT odp FROM OnDeliveryPayment odp";
-		Query query = getSession().createQuery(hql);
+		query.setMaxResults(1);
 		List<OnDeliveryPayment> onDeliveryPayments = query.getResultList();
-		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments : null;
+		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments.get(query.getFirstResult()) : null;
 	}
 	
 }

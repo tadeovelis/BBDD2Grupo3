@@ -32,7 +32,6 @@ public class MLServiceTestCase {
     @Autowired
     MLService service;
     
-    /*
     @Test
     public void testCreateUser() throws MLException{
         Calendar cal = Calendar.getInstance();
@@ -258,5 +257,4 @@ public class MLServiceTestCase {
         MLException ex = assertThrows(MLException.class, () -> this.service.createPurchase(pos, 5, u, d2, dp,"Calle 12 432",Float.valueOf(-54.45F), Float.valueOf(-62.22F), dop));
         assertEquals("Método de delivery no válido",ex.getMessage());
     }
-    */
 }
