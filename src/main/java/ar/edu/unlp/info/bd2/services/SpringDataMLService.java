@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import ar.edu.unlp.info.bd2.model.Category;
 import ar.edu.unlp.info.bd2.model.CreditCardPayment;
@@ -18,8 +18,16 @@ import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.Purchase;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.CategoryRepository;
+import ar.edu.unlp.info.bd2.repositories.CreditCardPaymentRepository;
+import ar.edu.unlp.info.bd2.repositories.DeliveryMethodRepository;
 import ar.edu.unlp.info.bd2.repositories.MLException;
+import ar.edu.unlp.info.bd2.repositories.OnDeliveryPaymentRepository;
+import ar.edu.unlp.info.bd2.repositories.PaymentMethodRepository;
+import ar.edu.unlp.info.bd2.repositories.ProductOnSaleRepository;
+import ar.edu.unlp.info.bd2.repositories.ProductRepository;
+import ar.edu.unlp.info.bd2.repositories.ProviderRepository;
 import ar.edu.unlp.info.bd2.repositories.PurchaseRepository;
+import ar.edu.unlp.info.bd2.repositories.UserRepository;
 
 public class SpringDataMLService implements MLService {
 	
@@ -28,6 +36,22 @@ public class SpringDataMLService implements MLService {
 	private PurchaseRepository purchaseRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private ProductRepository productRepository;
+	@Autowired
+	private CreditCardPaymentRepository creditCardPaymentRepository;
+	@Autowired
+	private DeliveryMethodRepository deliveryMethodRepository;
+	@Autowired
+	private OnDeliveryPaymentRepository onDeliveryPaymentRepository;
+	@Autowired
+	private PaymentMethodRepository paymentMethodRepository;
+	@Autowired
+	private ProductOnSaleRepository productOnSaleRepository;
+	@Autowired
+	private ProviderRepository providerRepository;
 	
 
 	@Override
@@ -156,7 +180,7 @@ public class SpringDataMLService implements MLService {
 		try {
 			this.categoryRepository.save(category);
 		}
-		catch(ConstraintViolationException e) {
+		catch(DataIntegrityViolationException e) {
 			throw new MLException("Constraint Violation");
 		}
 		return category;
@@ -164,40 +188,66 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Product createProduct(String name, Float weight, Category category) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = new Product(name, weight, category);
+		try {
+			this.productRepository.save(product);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
+		return product;
 	}
 
 	@Override
 	public User createUser(String email, String fullname, String password, Date dayOfBirth) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		User user = new User(email, fullname, password, dayOfBirth);
+		try {
+			this.userRepository.save(user);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
+		return user;
 	}
 
 	@Override
 	public Provider createProvider(String name, Long cuit) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		Provider provider = new Provider(name, cuit);
+		try {
+			this.providerRepository.save(provider);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
+		return provider;
 	}
 
 	@Override
 	public DeliveryMethod createDeliveryMethod(String name, Float cost, Float startWeight, Float endWeight)
 			throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		DeliveryMethod deliveryMethod = new DeliveryMethod(name, cost, startWeight, endWeight);
+		this.deliveryMethodRepository.save(deliveryMethod);
+		return deliveryMethod;
 	}
 
 	@Override
 	public CreditCardPayment createCreditCardPayment(String name, String brand, Long number, Date expiry, Integer cvv,
 			String owner) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		CreditCardPayment creditCardPayment = new CreditCardPayment(name, brand, number, expiry, cvv, owner);
+		try {
+			this.creditCardPaymentRepository.save(creditCardPayment);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
+		return creditCardPayment;
 	}
 
 	@Override
 	public OnDeliveryPayment createOnDeliveryPayment(String name, Float promisedAmount) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		OnDeliveryPayment onDeliveryPayment = new OnDeliveryPayment(name, promisedAmount);
+		this.onDeliveryPaymentRepository.save(onDeliveryPayment);
+		return onDeliveryPayment;
 	}
 
 	@Override
@@ -217,14 +267,12 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Optional<User> getUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.userRepository.findByEmail(email);
 	}
 
 	@Override
 	public Optional<Provider> getProviderByCuit(long cuit) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.providerRepository.findByCuit(cuit);
 	}
 
 	@Override
@@ -234,32 +282,27 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Optional<Product> getProductByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.findByName(name);
 	}
 
 	@Override
 	public ProductOnSale getProductOnSaleById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productOnSaleRepository.findById(id).get();
 	}
 
 	@Override
 	public Optional<DeliveryMethod> getDeliveryMethodByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.deliveryMethodRepository.findByName(name);
 	}
 
 	@Override
 	public Optional<CreditCardPayment> getCreditCardPaymentByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.creditCardPaymentRepository.findByName(name);
 	}
 
 	@Override
 	public Optional<OnDeliveryPayment> getOnDeliveryPaymentByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.onDeliveryPaymentRepository.findByName(name);
 	}
 
 	@Override

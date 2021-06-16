@@ -60,11 +60,11 @@ public class User {
         this.dayOfBirth = dayOfBirth;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long userId) {
+    public void setId(Long userId) {
         this.id = userId;
     }
     

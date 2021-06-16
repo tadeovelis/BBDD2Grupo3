@@ -8,6 +8,8 @@ import ar.edu.unlp.info.bd2.model.Provider;
 
 public interface ProviderRepository extends CrudRepository<Provider, Long> {
 
-	public Optional<Provider> findByCuit(long cuit);
+	public Optional<Provider> findByCuit(Long cuit);
+	
+	public Provider save(Provider provider);
 	
 }

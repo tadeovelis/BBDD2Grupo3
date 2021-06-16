@@ -75,7 +75,6 @@ public class MLServiceTestCase {
         MLException ex = assertThrows(MLException.class, () -> this.service.createUser("federico.orlando@info.unlp.edu.ar", "Federico Orlando", "pas$w0rd", dob));
         assertEquals("Constraint Violation",ex.getMessage());
     }
-    /*
 
     @Test
     public void testCreateProvider() throws MLException {
@@ -99,14 +98,14 @@ public class MLServiceTestCase {
         assertNotNull(cat.getId());
         Product prod = this.service.createProduct("Lamparita led 7w fria", Float.valueOf(40.5F), cat);
         assertNotNull(prod.getId());
-        assertEquals(40.5F, (float) prod.getWeigth());
+        assertEquals(40.5F, (float) prod.getWeight());
         Optional<Product> p = this.service.getProductByName("Lamparita led 7w fria");
         if (!p.isPresent()) {
             throw new MLException("Product doesn't exists");
         }
         Product product = p.get();
         assertNotNull(product.getId());
-        assertEquals(Float.valueOf(40.5F), product.getWeigth());
+        assertEquals(Float.valueOf(40.5F), product.getWeight());
         assertEquals("Hogar",product.getCategory().getName());
         MLException ex = assertThrows(MLException.class, () -> this.service.createProduct("Lamparita led 7w fria", Float.valueOf(40.5F), cat));
         assertEquals("Constraint Violation",ex.getMessage());
@@ -169,6 +168,7 @@ public class MLServiceTestCase {
         assertEquals(Float.valueOf(100F),dp.getPromisedAmount());
     }
 
+    /*
     @Test
     public void testCreateProductOnSale() throws MLException {
         Provider p = this.service.createProvider("Philips",30715589634L);
@@ -188,6 +188,7 @@ public class MLServiceTestCase {
         assertEquals(id,pos.getInitialDate());
         assertEquals(p.getCuit(),pos.getProvider().getCuit());
     }
+    
 
     @Test
     public void testUpdateProductOnSale() throws MLException {
@@ -218,6 +219,7 @@ public class MLServiceTestCase {
         MLException ex = assertThrows(MLException.class, () -> this.service.createProductOnSale(prod, p, 200F, id3));
         assertEquals("Ya existe un precio para el producto con fecha de inicio de vigencia posterior a la fecha de inicio dada" ,ex.getMessage());
     }
+    
 
     @Test
     public void testCreatePurchase() throws MLException {
