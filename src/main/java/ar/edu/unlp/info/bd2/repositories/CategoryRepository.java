@@ -10,4 +10,6 @@ public interface CategoryRepository extends CrudRepository<Category, Long>{
 
 	public Optional<Category> findByName(String name);
 	
+	public Category save(Category category);
+	
 }

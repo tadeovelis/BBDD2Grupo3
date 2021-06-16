@@ -38,7 +38,7 @@ public class MLServiceTestCase {
         this.service = this.getService();
     }
 
-    /*
+    
     @Test
     public void testCreateCategory() throws MLException {
         Category c = this.service.createCategory("Hogar");
@@ -75,7 +75,7 @@ public class MLServiceTestCase {
         MLException ex = assertThrows(MLException.class, () -> this.service.createUser("federico.orlando@info.unlp.edu.ar", "Federico Orlando", "pas$w0rd", dob));
         assertEquals("Constraint Violation",ex.getMessage());
     }
-
+    /*
 
     @Test
     public void testCreateProvider() throws MLException {

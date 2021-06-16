@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import ar.edu.unlp.info.bd2.model.Category;
 import ar.edu.unlp.info.bd2.model.CreditCardPayment;
 import ar.edu.unlp.info.bd2.model.DeliveryMethod;
@@ -14,13 +17,18 @@ import ar.edu.unlp.info.bd2.model.ProductOnSale;
 import ar.edu.unlp.info.bd2.model.Provider;
 import ar.edu.unlp.info.bd2.model.Purchase;
 import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.repositories.CategoryRepository;
 import ar.edu.unlp.info.bd2.repositories.MLException;
 import ar.edu.unlp.info.bd2.repositories.PurchaseRepository;
 
 public class SpringDataMLService implements MLService {
 	
 	// Repositorios
-	PurchaseRepository purchaseRepository;
+	@Autowired
+	private PurchaseRepository purchaseRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
 
 	@Override
 	public List<Purchase> getAllPurchasesMadeByUser(String username) {
@@ -144,8 +152,14 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Category createCategory(String name) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		Category category = new Category(name);
+		try {
+			this.categoryRepository.save(category);
+		}
+		catch(ConstraintViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
+		return category;
 	}
 
 	@Override
@@ -215,8 +229,7 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Optional<Category> getCategoryByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.categoryRepository.findByName(name);
 	}
 
 	@Override
