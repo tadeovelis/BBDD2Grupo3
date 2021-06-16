@@ -1,0 +1,15 @@
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/Category.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/utils/DBInitializer.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/ProductOnSale.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/services/MLService.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/CreditCardPayment.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/User.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/DeliveryMethod.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/config/SpringDataConfiguration.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/Purchase.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/config/DBInitializerConfig.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/services/MLStatisticsService.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/Product.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/Provider.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/PaymentMethod.java
+/home/tadeo/eclipse-workspace/MLBBDD2-main/BBDD2Grupo3/src/main/java/ar/edu/unlp/info/bd2/model/OnDeliveryPayment.java

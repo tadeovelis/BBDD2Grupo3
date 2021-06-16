@@ -82,6 +82,6 @@ public class SpringDataConfiguration {
     }
 
     private Integer getGroupNumber() {
-        return 999;
+        return 3;
     }
 }
