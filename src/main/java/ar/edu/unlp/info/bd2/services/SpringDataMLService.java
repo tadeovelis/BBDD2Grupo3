@@ -164,8 +164,7 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Product getHeaviestProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.findFirstByOrderByWeightDesc();
 	}
 
 	@Override
