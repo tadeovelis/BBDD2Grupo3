@@ -75,7 +75,6 @@ public class MLStatisticsTestCase {
         this.assertListEquality(users.stream().map(property -> property.getEmail()).collect(Collectors.toList()),Arrays.asList("carlospascual402@hotmail.com","matiasgarca37@hotmail.com","maracalvo55@yahoo.com"));
     }
 
-    /*
     @Test
     public void testGetUsersSpendingMoreThan() {
         List<User> users = this.service.getUsersSpendingMoreThan(Float.valueOf(1900000.00F));
@@ -90,6 +89,7 @@ public class MLStatisticsTestCase {
         this.assertListEquality(providers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Grupo Nucleo S.A.","Refrigeracion MG Repuestos","Seara Refrigeración S.H."));
     }
 
+    /*
     @Test
     public void testGetTop3MoreExpensiveProducts() {
         List<Product> products = this.service.getTop3MoreExpensiveProducts();

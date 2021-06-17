@@ -64,19 +64,19 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public List<User> getUsersSpendingMoreThanInPurchase(Float amount) {
-		return this.userRepository.findAllUsersSpendingMoreThanInPurchase(amount);
+		return this.userRepository.getUsersSpendingMoreThanInPurchase(amount);
 	}
 
 	@Override
 	public List<User> getUsersSpendingMoreThan(Float amount) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.userRepository.getUsersSpendingMoreThan((double) amount);
 	}
 
 	@Override
 	public List<Provider> getTopNProvidersInPurchases(int n) {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, n);
+		List<Provider> providers = this.providerRepository.getTopNProvidersInPurchases(n, pageable); 
+		return !providers.isEmpty() ? providers : null;
 	}
 
 	@Override
