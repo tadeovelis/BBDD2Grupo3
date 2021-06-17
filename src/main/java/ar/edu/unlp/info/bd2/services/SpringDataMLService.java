@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import ar.edu.unlp.info.bd2.model.Category;
 import ar.edu.unlp.info.bd2.model.CreditCardPayment;
@@ -57,14 +59,12 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public List<Purchase> getAllPurchasesMadeByUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.purchaseRepository.findAllPurchasesMadeByUser(username);
 	}
 
 	@Override
 	public List<User> getUsersSpendingMoreThanInPurchase(Float amount) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.userRepository.findAllUsersSpendingMoreThanInPurchase(amount);
 	}
 
 	@Override
@@ -226,7 +226,12 @@ public class SpringDataMLService implements MLService {
 	public DeliveryMethod createDeliveryMethod(String name, Float cost, Float startWeight, Float endWeight)
 			throws MLException {
 		DeliveryMethod deliveryMethod = new DeliveryMethod(name, cost, startWeight, endWeight);
-		this.deliveryMethodRepository.save(deliveryMethod);
+		try {
+			this.deliveryMethodRepository.save(deliveryMethod);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
 		return deliveryMethod;
 	}
 
@@ -286,7 +291,9 @@ public class SpringDataMLService implements MLService {
 	}
 	
 	public ProductOnSale getLastProductOnSaleForProductAndProvider(Product product, Provider provider) {
-		return this.productOnSaleRepository.getLastProductOnSaleForProductAndProvider(product, provider);
+		Pageable pageable = PageRequest.of(0, 1);
+		List<ProductOnSale> products = this.productOnSaleRepository.getLastProductOnSaleForProductAndProvider(product, provider, pageable);
+		return !products.isEmpty() ? products.get(0) : null;
 	}
 
 	@Override
