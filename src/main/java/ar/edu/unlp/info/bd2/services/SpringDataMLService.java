@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -252,8 +253,40 @@ public class SpringDataMLService implements MLService {
 	@Override
 	public ProductOnSale createProductOnSale(Product product, Provider provider, Float price, Date initialDate)
 			throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		// Chequear si el producto ya tiene un precio para ese proveedor
+		ProductOnSale pos = this.getLastProductOnSaleForProductAndProvider(product, provider);
+		// Si ya tiene tengo que fijarme que la initialDate sea posterior a la initialDate actual
+		// Después, si la initialDate está bien, le actualizo la finalDate de null a initialDate - 1 día
+		if (pos != null) {
+			// Comparo las dates
+			if (initialDate.after(pos.getInitialDate()) || initialDate.equals(pos.getInitialDate())) { 
+				// Le pongo como finalDate la initialDate - 1 día
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(initialDate);
+				cal.add(Calendar.DATE, -1);
+				Date newFinalDate = cal.getTime();
+				pos.setFinalDate(newFinalDate);
+			}
+			// Si la initialDate es anterior a la initialDate 
+			// del ProductOnSale entonces lanzo la excepción
+			else {
+				throw new MLException("Ya existe un precio para el producto con fecha de inicio "
+										+ "de vigencia posterior a la fecha de inicio dada");
+			}
+		}
+		// Creo el nuevo ProductOnSale (si no tiré excepción obvio)
+		ProductOnSale productOnSale = new ProductOnSale(product, provider, price, initialDate);
+		try {
+			productOnSaleRepository.save(productOnSale);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new MLException("Constraint Violation");
+		}
+		return productOnSale;
+	}
+	
+	public ProductOnSale getLastProductOnSaleForProductAndProvider(Product product, Provider provider) {
+		return this.productOnSaleRepository.getLastProductOnSaleForProductAndProvider(product, provider);
 	}
 
 	@Override
