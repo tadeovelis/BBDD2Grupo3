@@ -293,8 +293,16 @@ public class SpringDataMLService implements MLService {
 	public Purchase createPurchase(ProductOnSale productOnSale, Integer quantity, User client,
 			DeliveryMethod deliveryMethod, PaymentMethod paymentMethod, String address, Float coordX, Float coordY,
 			Date dateOfPurchase) throws MLException {
-		// TODO Auto-generated method stub
-		return null;
+		Purchase purchase = new Purchase(productOnSale, quantity, client, deliveryMethod, paymentMethod, address, coordX, coordY, dateOfPurchase);
+
+		if (purchase.getTotalWeight() >= deliveryMethod.getStartWeight() &&
+				purchase.getTotalWeight() <= deliveryMethod.getEndWeight()) {
+			purchaseRepository.save(purchase);
+			return purchase;
+		}
+		else {
+			throw new MLException("método de delivery no válido");
+		}
 	}
 
 	@Override
