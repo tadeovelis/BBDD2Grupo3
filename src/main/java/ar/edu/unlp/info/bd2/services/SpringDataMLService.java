@@ -81,8 +81,9 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public List<Product> getTop3MoreExpensiveProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, 3);
+		List<Product> products = this.productRepository.getTop3MoreExpensiveProducts(3, pageable); 
+		return !products.isEmpty() ? products : null;
 	}
 
 	@Override
