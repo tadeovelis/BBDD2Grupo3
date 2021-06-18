@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -23,5 +24,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
 			+ "group by pur.client "
 			+ "having ?1 < sum((pur.quantity * pur.productOnSale.price) + pur.deliveryMethod.cost)")
 	public List<User> getUsersSpendingMoreThan(Double amount);
+
+	@Query("select pur.client from Purchase pur "
+			+ "group by pur.client "
+			+ "order by count(*) desc")
+	public List<User> getTopNUsersMorePurchase(int n, Pageable pageable);
 	
 }

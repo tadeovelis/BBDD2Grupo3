@@ -88,26 +88,24 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public List<User> getTopNUsersMorePurchase(int n) {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, n);
+		List<User> users = this.userRepository.getTopNUsersMorePurchase(n, pageable); 
+		return !users.isEmpty() ? users : null;
 	}
 
 	@Override
 	public List<Purchase> getPurchasesInPeriod(Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.purchaseRepository.findByDateOfPurchaseBetween(startDate, endDate);
 	}
 
 	@Override
 	public List<Product> getProductForCategory(Category category) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.findByCategory(category);
 	}
 
 	@Override
 	public List<Purchase> getPurchasesForProvider(Long cuit) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.purchaseRepository.getPurchasesForProvider(cuit);
 	}
 
 	@Override

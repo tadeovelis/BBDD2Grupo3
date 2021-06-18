@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import ar.edu.unlp.info.bd2.model.Category;
 import ar.edu.unlp.info.bd2.model.Product;
 
 public interface ProductRepository extends CrudRepository<Product, Long>{
@@ -19,5 +20,7 @@ public interface ProductRepository extends CrudRepository<Product, Long>{
 			+ "group by pos.product "
 			+ "order by max(pos.price) desc")
 	public List<Product> getTop3MoreExpensiveProducts(int i, Pageable pageable);
+
+	public List<Product> findByCategory(Category category);
 	
 }
