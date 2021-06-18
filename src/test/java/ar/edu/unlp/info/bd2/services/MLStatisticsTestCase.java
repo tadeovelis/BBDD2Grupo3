@@ -129,8 +129,6 @@ public class MLStatisticsTestCase {
         assertEquals(3,purchases.size());
         this.assertListEquality(purchases.stream().map(property -> property.getAddress()).collect(Collectors.toList()),Arrays.asList("Calle 40 Nº137","Calle 57 Nº1637","Calle 62 Nº1158"));
     }
-    
-    /*
 
     @Test
     public void testGetBestSellingProduct() {
@@ -181,12 +179,15 @@ public class MLStatisticsTestCase {
         assertEquals("Pago Efectivo pos072",odp.getName());
     }
 
+    /*
     @Test
     public void testGetProductWithMoreThan20percentDiferenceInPrice() {
         List<Product> products = this.service.getProductWithMoreThan20percentDiferenceInPrice();
         assertEquals(29,products.size());
     }
-
+    */
+    
+    
     @Test
     public void testGetHeaviestProduct() {
         Product product = this.service.getHeaviestProduct();
@@ -198,5 +199,4 @@ public class MLStatisticsTestCase {
         Category category = this.service.getCategoryWithLessProducts();
         assertEquals("Calderas", category.getName());
     }
-    */
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
@@ -29,5 +30,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
 			+ "group by pur.client "
 			+ "order by count(*) desc")
 	public List<User> getTopNUsersMorePurchase(int n, Pageable pageable);
+
+	@Query("select p from Purchase pur join pur.productOnSale.product as p "
+			+ "group by p "
+			+ "order by count(*) desc")
+	public List<Product> getBestSellingProduct(int i, Pageable pageable);
 	
 }

@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.repositories;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,9 @@ public interface ProductOnSaleRepository extends CrudRepository<ProductOnSale, L
 
 	@Query("from ProductOnSale pos where pos.product = ?1 and pos.provider = ?2 and pos.finalDate is null")
 	public List<ProductOnSale> getLastProductOnSaleForProductAndProvider(Product product, Provider provider, Pageable pageable);
+
+	@Query("select distinct pur.productOnSale from Purchase pur "
+			+ "where pur.dateOfPurchase = ?1")
+	public List<ProductOnSale> getSoldProductsOn(Date day);
 	
 }

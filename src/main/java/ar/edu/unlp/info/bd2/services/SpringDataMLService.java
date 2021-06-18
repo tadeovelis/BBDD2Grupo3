@@ -110,56 +110,55 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Product getBestSellingProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, 1);
+		List<Product> products = this.userRepository.getBestSellingProduct(1, pageable); 
+		return !products.isEmpty() ? products.get(0) : null;
 	}
 
 	@Override
 	public List<Product> getProductsOnePrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.getProductOnePrice();
 	}
 
 	@Override
 	public List<Product> getProductWithMoreThan20percentDiferenceInPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.getProductWithMoreThan20percentDiferenceInPrice();
 	}
 
 	@Override
 	public Provider getProviderLessExpensiveProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, 1);
+		List<Provider> providers = this.providerRepository.getProviderLessExpensiveProduct(1, pageable); 
+		return !providers.isEmpty() ? providers.get(0) : null;
 	}
 
 	@Override
 	public List<Provider> getProvidersDoNotSellOn(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.providerRepository.getProvidersDoNotSellOn(day);
 	}
 
 	@Override
 	public List<ProductOnSale> getSoldProductsOn(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productOnSaleRepository.getSoldProductsOn(day);
 	}
 
 	@Override
 	public List<Product> getProductsNotSold() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.getProductsNotSold();
 	}
 
 	@Override
 	public DeliveryMethod getMostUsedDeliveryMethod() {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, 1);
+		List<DeliveryMethod> deliveryMethods = this.deliveryMethodRepository.getMostUsedDeliveryMethod(1, pageable); 
+		return !deliveryMethods.isEmpty() ? deliveryMethods.get(0) : null;
 	}
 
 	@Override
 	public OnDeliveryPayment getMoreChangeOnDeliveryMethod() {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, 1);
+		List<OnDeliveryPayment> onDeliveryPayments = this.onDeliveryPaymentRepository.getMoreChangeOnDeliveryMethod(1, pageable); 
+		return !onDeliveryPayments.isEmpty() ? onDeliveryPayments.get(0) : null;
 	}
 
 	@Override
@@ -169,8 +168,9 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Category getCategoryWithLessProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		Pageable pageable = PageRequest.of(0, 1);
+		List<Category> categories = this.categoryRepository.getCategoryWithLessProducts(1, pageable); 
+		return !categories.isEmpty() ? categories.get(0) : null;
 	}
 
 	@Override
