@@ -270,6 +270,7 @@ public class SpringDataMLService implements MLService {
 				cal.add(Calendar.DATE, -1);
 				Date newFinalDate = cal.getTime();
 				pos.setFinalDate(newFinalDate);
+				productOnSaleRepository.save(pos);
 			}
 			// Si la initialDate es anterior a la initialDate 
 			// del ProductOnSale entonces lanzo la excepción
@@ -337,7 +338,7 @@ public class SpringDataMLService implements MLService {
 	}
 
 	@Override
-	public Optional<DeliveryMethod> getDeliveryMethodByName(String name) {
+	public Optional<DeliveryMethod> getDeliveryMethodByName(String name) {			
 		return this.deliveryMethodRepository.findByName(name);
 	}
 

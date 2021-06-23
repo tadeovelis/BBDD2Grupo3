@@ -37,7 +37,9 @@ public interface ProductRepository extends CrudRepository<Product, Long>{
 	@Query("select pos.product from ProductOnSale pos "
 			+ "where pos.finalDate is null "
 			+ "group by pos.product "
-			+ "having ( (max(pos.price) - min(pos.price)) > (min(pos.price) * 0.2) )")
+			+ "having ((max(pos.price) / min(pos.price))>1.2)"
+			)
+			
 	public List<Product> getProductWithMoreThan20percentDiferenceInPrice();
 	
 }

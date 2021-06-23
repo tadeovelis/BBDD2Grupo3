@@ -179,13 +179,13 @@ public class MLStatisticsTestCase {
         assertEquals("Pago Efectivo pos072",odp.getName());
     }
 
-    /*
+    
     @Test
     public void testGetProductWithMoreThan20percentDiferenceInPrice() {
         List<Product> products = this.service.getProductWithMoreThan20percentDiferenceInPrice();
         assertEquals(29,products.size());
     }
-    */
+    
     
     
     @Test
