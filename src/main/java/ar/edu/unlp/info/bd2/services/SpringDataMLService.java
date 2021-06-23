@@ -339,7 +339,7 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Optional<DeliveryMethod> getDeliveryMethodByName(String name) {			
-		return this.deliveryMethodRepository.findByName(name);
+		return Optional.ofNullable(this.deliveryMethodRepository.findAllByName(name).get(0));
 	}
 
 	@Override
