@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
-@Rollback(true)
+@Rollback(false)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {SpringDataConfiguration.class},
@@ -62,12 +62,12 @@ public class MLStatisticsTestCase {
         }
     }
 
-    
+
     @Test
     public void testGetAllPurchasesMadeByUser() {
         assertEquals(5,this.service.getAllPurchasesMadeByUser("silviasez428@gmail.com").size());
     }
-    
+
     @Test
     public void testGetUsersSpendingMoreThanInPurchase() {
         List<User> users = this.service.getUsersSpendingMoreThanInPurchase(Float.valueOf(920000F));
@@ -95,7 +95,7 @@ public class MLStatisticsTestCase {
         assertEquals(3, products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Salamandra A Leña Tromen Pehuen 9500 Kcal/h 106 M2 Cuotas","Lavarropas  automático Samsung WW90J5410G inverter plata 9kg 220 V","Nebulizador a pistón Omron NE-C801 blanco 100V/240V"));
     }
-    
+
     @Test
     public void testGetTopNUsersMorePurchase() {
         List<User> users = this.service.getTopNUsersMorePurchase(7);
@@ -122,7 +122,7 @@ public class MLStatisticsTestCase {
         assertEquals(4,products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Caldera Peisa Diva Duo Ds 32000 Kcal Tiro Forzado","Caldera Mural Orbis 230cto Solo Calefaccion 29000 Kcal Tiro Natural Con Envio","Caldera Mural Orbis 230cto Calefaccion 30000 Kcal + Envio","Caldera A Gas Baxi Eco 4s 24 Doble Servicio Tiro Forzado"));
     }
-    
+
     @Test
     public void testGetPurchasesForProvider() {
         List<Purchase> purchases = this.service.getPurchasesForProvider(21859773715L);
@@ -179,21 +179,18 @@ public class MLStatisticsTestCase {
         assertEquals("Pago Efectivo pos072",odp.getName());
     }
 
-    
     @Test
     public void testGetProductWithMoreThan20percentDiferenceInPrice() {
         List<Product> products = this.service.getProductWithMoreThan20percentDiferenceInPrice();
         assertEquals(29,products.size());
     }
-    
-    
-    
+
     @Test
     public void testGetHeaviestProduct() {
         Product product = this.service.getHeaviestProduct();
         assertEquals("Lavavajillas Drean Dish 15.2 DT de 15 cubiertos blanco 220V",product.getName());
     }
-    
+
     @Test
     public void testGetCategoryWithLessProducts() {
         Category category = this.service.getCategoryWithLessProducts();

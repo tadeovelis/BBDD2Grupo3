@@ -133,6 +133,6 @@ public class Purchase {
 		return ( (this.quantity * this.productOnSale.getPrice()) + this.deliveryMethod.getCost() );
 	}
 	public float getTotalWeight() {
-		return (this.quantity * this.productOnSale.getProduct().getWeight());
+		return (this.quantity * this.productOnSale.getProduct().getWeigth());
 	}
 }

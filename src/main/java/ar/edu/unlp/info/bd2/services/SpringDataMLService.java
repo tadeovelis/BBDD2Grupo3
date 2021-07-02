@@ -269,7 +269,7 @@ public class SpringDataMLService implements MLService {
 				cal.setTime(initialDate);
 				cal.add(Calendar.DATE, -1);
 				Date newFinalDate = cal.getTime();
-				pos.setFinalDate(newFinalDate);
+				pos.setFinalDate(newFinalDate);	
 				productOnSaleRepository.save(pos);
 			}
 			// Si la initialDate es anterior a la initialDate 
