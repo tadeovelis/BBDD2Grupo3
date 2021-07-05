@@ -13,8 +13,6 @@ import ar.edu.unlp.info.bd2.model.Provider;
 public interface ProviderRepository extends CrudRepository<Provider, Long> {
 
 	public Optional<Provider> findByCuit(Long cuit);
-	
-	public Provider save(Provider provider);
 
 	@Query("select pro from Purchase pur join pur.productOnSale.provider as pro "
 			+ "group by pro "

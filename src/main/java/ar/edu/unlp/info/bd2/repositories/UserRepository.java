@@ -13,8 +13,6 @@ import ar.edu.unlp.info.bd2.model.User;
 public interface UserRepository extends CrudRepository<User, Long> {
 
 	public Optional<User> findByEmail(String email);
-	
-	public User save(User user);
 
 	@Query("select pur.client from Purchase pur "
 			+ "where ((pur.quantity * pur.productOnSale.price) + pur.deliveryMethod.cost) > ?1 "

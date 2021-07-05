@@ -12,8 +12,6 @@ import ar.edu.unlp.info.bd2.model.Category;
 public interface CategoryRepository extends CrudRepository<Category, Long>{
 
 	public Optional<Category> findByName(String name);
-	
-	public Category save(Category category);
 
 	@Query("select p.category from Product p "
 			+ "group by p.category "
