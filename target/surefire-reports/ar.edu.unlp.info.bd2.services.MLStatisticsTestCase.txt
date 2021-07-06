@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ar.edu.unlp.info.bd2.services.MLStatisticsTestCase
 -------------------------------------------------------------------------------
-Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.299 sec - in ar.edu.unlp.info.bd2.services.MLStatisticsTestCase
+Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.95 sec - in ar.edu.unlp.info.bd2.services.MLStatisticsTestCase

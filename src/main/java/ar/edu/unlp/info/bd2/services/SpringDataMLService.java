@@ -59,7 +59,7 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public List<Purchase> getAllPurchasesMadeByUser(String username) {
-		return this.purchaseRepository.findAllPurchasesMadeByUser(username);
+		return this.purchaseRepository.findAllPurchasesMadeByClientEmail(username);
 	}
 
 	@Override

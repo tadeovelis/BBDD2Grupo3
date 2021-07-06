@@ -13,8 +13,7 @@ public interface PurchaseRepository extends CrudRepository<Purchase, Long> {
 
 	public Optional<Purchase> findById(Long id);
 
-	@Query("from Purchase pur where pur.client.email = ?1")
-	public List<Purchase> findAllPurchasesMadeByUser(String username);
+	public List<Purchase> findAllPurchasesMadeByClientEmail(String username);
 
 	public List<Purchase> findByDateOfPurchaseBetween(Date startDate, Date endDate);
 
