@@ -1,4 +1,34 @@
 -------------------------------------------------------------------------------
 Test set: ar.edu.unlp.info.bd2.services.MLServiceTestCase
 -------------------------------------------------------------------------------
-Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.143 sec - in ar.edu.unlp.info.bd2.services.MLServiceTestCase
+Tests run: 10, Failures: 0, Errors: 10, Skipped: 0, Time elapsed: 0.268 sec <<< FAILURE! - in ar.edu.unlp.info.bd2.services.MLServiceTestCase
+testCreateProvider  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testUpdateProductOnSale  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testCreateProduct  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testCreateDeliveryMethod  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testCreateCategory  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testCreateCreditCardPayment  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testCreateUser  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testCreateProductOnSale  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testCreatePurchase  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+
+testOnDeliveryPayment  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+

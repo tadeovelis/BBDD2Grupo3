@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
-@Rollback(false)
+@Rollback(true)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = {SpringDataConfiguration.class},

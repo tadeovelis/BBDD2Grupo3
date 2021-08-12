@@ -1,4 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: ar.edu.unlp.info.bd2.services.MLStatisticsTestCase
 -------------------------------------------------------------------------------
-Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.95 sec - in ar.edu.unlp.info.bd2.services.MLStatisticsTestCase
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.002 sec <<< FAILURE! - in ar.edu.unlp.info.bd2.services.MLStatisticsTestCase
+ar.edu.unlp.info.bd2.services.MLStatisticsTestCase  Time elapsed: 0.001 sec  <<< ERROR!
+java.lang.NoSuchFieldError: IMPORT_BEAN_NAME_GENERATOR
+

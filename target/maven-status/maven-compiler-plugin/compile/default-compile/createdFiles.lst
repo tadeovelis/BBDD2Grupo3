@@ -1,3 +1,4 @@
+ar/edu/unlp/info/bd2/config/ElasticSearchConfig.class
 ar/edu/unlp/info/bd2/repositories/UserRepository.class
 ar/edu/unlp/info/bd2/repositories/PurchaseRepository.class
 ar/edu/unlp/info/bd2/model/Product.class
@@ -14,6 +15,7 @@ ar/edu/unlp/info/bd2/utils/DBInitializer.class
 ar/edu/unlp/info/bd2/repositories/DeliveryMethodRepository.class
 ar/edu/unlp/info/bd2/repositories/OnDeliveryPaymentRepository.class
 ar/edu/unlp/info/bd2/repositories/CategoryRepository.class
+ar/edu/unlp/info/bd2/repositories/UserRepositoryES.class
 ar/edu/unlp/info/bd2/config/SpringDataConfiguration.class
 ar/edu/unlp/info/bd2/services/MLService.class
 ar/edu/unlp/info/bd2/repositories/ProductOnSaleRepository.class

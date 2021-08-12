@@ -31,6 +31,7 @@ import ar.edu.unlp.info.bd2.repositories.ProductRepository;
 import ar.edu.unlp.info.bd2.repositories.ProviderRepository;
 import ar.edu.unlp.info.bd2.repositories.PurchaseRepository;
 import ar.edu.unlp.info.bd2.repositories.UserRepository;
+import ar.edu.unlp.info.bd2.repositories.UserRepositoryES;
 
 public class SpringDataMLService implements MLService {
 	
@@ -41,6 +42,8 @@ public class SpringDataMLService implements MLService {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserRepositoryES userRepositoryES;
 	@Autowired
 	private ProductRepository productRepository;
 	@Autowired
@@ -314,7 +317,8 @@ public class SpringDataMLService implements MLService {
 
 	@Override
 	public Optional<User> getUserByEmail(String email) {
-		return this.userRepository.findByEmail(email);
+		//return this.userRepository.findByEmail(email);
+		return this.userRepositoryES.findByEmail(email);
 	}
 
 	@Override

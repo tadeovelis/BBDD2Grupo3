@@ -2,10 +2,13 @@ package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.*;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.util.Date;
 
 
 @Entity
+@Document(indexName = "user")
 @Table(name = "User")
 public class User {
     @Id
